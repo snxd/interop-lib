@@ -93,6 +93,9 @@ typedef int32 (*Class_UntrackInstanceCallback)(void *Pointer);
 #elif defined(_WINDOWS)
 #define String_CompareWithoutCase(s1,s2)                (_strcmpi(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                        strcpy_s(t, l, s)
+#elif defined(__linux__)
+#define String_CompareWithoutCase(s1,s2)                (strcmpi(s1, s2) == 0)
+#define String_CopyLength(t,s,l)                        strncpy(t, s, l)
 #endif
 
 /*********************************************************************/
@@ -128,6 +131,8 @@ int32 NotificationCenter_AddObserver(char *Type, char *Notification, void *UserP
 int32 NotificationCenter_AddInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback);
 int32 NotificationCenter_RemoveObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback);
 int32 NotificationCenter_RemoveInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback);
+int32 NotificationCenter_FireWithJSON(char *Type, char *Notification, void *Sender, char *Format, ...);
+int32 NotificationCenter_FireAfterDelayWithJSON(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, ...);
 
 int32 Interop_GenerateInstanceId(char *String, int32 MaxString);
 
