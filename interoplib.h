@@ -13,8 +13,6 @@ extern "C" {
 
 /*********************************************************************/
 
-#ifndef _EMU_CORE_H_
-
 typedef uint8_t                                 uint8;
 typedef uint16_t                                uint16;
 typedef uint32_t                                uint32;
@@ -38,8 +36,6 @@ typedef uint64                                  time64;
 #endif
 #ifndef NULL
 #define NULL    (0)
-#endif
-
 #endif
 
 /*********************************************************************/
