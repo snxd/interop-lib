@@ -96,6 +96,13 @@ typedef int32 (*Class_UntrackInstanceCallback)(void *Pointer);
 
 /*********************************************************************/
 
+typedef int32 (*Generic_PrintCallback)(echandle PrintHandle, char *Format, ...);
+
+/*********************************************************************/
+
+typedef int32 (*Dictionary_CreateCallback)(echandle *DictionaryHandle);
+typedef int32 (*Dictionary_DeleteCallback)(echandle *DictionaryHandle);
+
 typedef int32 (*NotificationCenter_InteropExecuteCallback)(void* UserPtr, char *InstanceId, char *String, char *ResultString, int32 ResultStringLength);
 typedef int32 (*NotificationCenter_ObserverCallback)(void *UserPtr, char *Type, char *Notification, void *Sender, echandle DictionaryHandle);
 typedef int32 (*NotificationCenter_AddInstanceObserverCallback)(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback);
@@ -123,11 +130,16 @@ char *Class_ConvertToInstanceId(void *Pointer);
 int32 Class_TrackInstance(void *Pointer, char *InstanceId);
 int32 Class_UntrackInstance(void *Pointer);
 
+int32 Dictionary_Create(echandle *DictionaryHandle);
+int32 Dictionary_Delete(echandle *DictionaryHandle);
+
 int32 NotificationCenter_AddObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback);
 int32 NotificationCenter_AddInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback);
 int32 NotificationCenter_RemoveObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback);
 int32 NotificationCenter_RemoveInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback);
+int32 NotificationCenter_Fire(char *Type, char *Notification, void *Sender, echandle DictionaryHandle);
 int32 NotificationCenter_FireWithJSON(char *Type, char *Notification, void *Sender, char *Format, ...);
+int32 NotificationCenter_FireAfterDelay(char *Type, char *Notification, void *Sender, int32 DelayMS, echandle DictionaryHandle);
 int32 NotificationCenter_FireAfterDelayWithJSON(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, ...);
 
 int32 Interop_GenerateInstanceId(char *String, int32 MaxString);
