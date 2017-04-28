@@ -83,14 +83,11 @@ typedef int32 (*Class_UntrackInstanceCallback)(void *Pointer);
 #define String_Print                                    snprintf
 #define String_Compare(s1,s2)                           (strcmp(s1, s2) == 0)
 #define String_Length                                   strlen
-#if defined(__APPLE__)
-#define String_CompareWithoutCase(s1,s2)                (strcasecmp(s1, s2) == 0)
-#define String_CopyLength(t,s,l)                        strncpy(t, s, l)
-#elif defined(_WINDOWS)
+#if defined(_WINDOWS)
 #define String_CompareWithoutCase(s1,s2)                (_strcmpi(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                        strcpy_s(t, l, s)
-#elif defined(__linux__)
-#define String_CompareWithoutCase(s1,s2)                (strcmpi(s1, s2) == 0)
+#else
+#define String_CompareWithoutCase(s1,s2)                (strcasecmp(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                        strncpy(t, s, l)
 #endif
 
