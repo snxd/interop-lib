@@ -13,6 +13,13 @@ extern "C" {
 
 /*********************************************************************/
 
+typedef int32 (*Interop_ExecuteCallback)(void* UserPtr, char *InstanceId, char *String, char *ResultString, int32 ResultStringLength);
+typedef int32 (*Interop_ReleaseInstanceCallback)(void** UserPtr);
+typedef int32 (*Interop_InvokeInstanceCallback)(void* UserPtr, char *String, char *ResultString, int32 ResultStringLength);
+typedef int32 (*Interop_ProcessInstanceCallback)(void* UserPtr);
+
+/*********************************************************************/
+
 /*! 
  * Called when an instance is created
  * \param TypeName type of object to be created

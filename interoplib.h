@@ -105,10 +105,6 @@ typedef int32 (*NotificationCenter_FireAfterDelayWithJSONCallback)(char *Type, c
 typedef int32 (*NotificationCenter_FireAfterDelayWithJSONVCallback)(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, va_list ArgumentList);
 
 typedef int32 (*Interop_GenerateInstanceIdCallback)(char *String, int32 MaxString);
-typedef int32 (*Interop_ExecuteCallback)(void* UserPtr, char *InstanceId, char *String, char *ResultString, int32 ResultStringLength);
-typedef int32 (*Interop_ReleaseInstanceCallback)(void** UserPtr);
-typedef int32 (*Interop_InvokeInstanceCallback)(void* UserPtr, char *String, char *ResultString, int32 ResultStringLength);
-typedef int32 (*Interop_ProcessInstanceCallback)(void* UserPtr);
 
 /*********************************************************************/
 
