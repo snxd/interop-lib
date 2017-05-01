@@ -40,8 +40,7 @@ typedef uint64                                  time64;
 
 /*********************************************************************/
 
-#define MAX_JSON_STRINGLENGTH                   (1024 * 8)
-#define MAX_JSON_PARAMETERS                     (10)
+#define INTEROP_MAXSTRING                           (1024 * 8)
 
 /*********************************************************************/
 
