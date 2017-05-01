@@ -45,9 +45,6 @@ typedef uint64                                  time64;
 
 /*********************************************************************/
 
-typedef int32 (*Class_DeleteCallback)(echandle *ClassHandle);
-typedef int32 (*Class_DeleteMemTypeCallback)(echandle *ClassHandle, int32 MemType);
-
 typedef struct ClassStruct
 {
     char     InstanceId[40];
