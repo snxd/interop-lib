@@ -29,6 +29,93 @@ Interop_GenerateInstanceIdCallback  Interop_GenerateInstanceIdPtr = NULL;
 
 /*********************************************************************/
 
+void *Class_ConvertFromInstanceId(char *InstanceId)
+{
+    return Class_ConvertFromInstanceIdPtr(InstanceId);
+}
+
+char *Class_ConvertToInstanceId(void *Pointer)
+{
+    return Class_ConvertToInstanceIdPtr(Pointer);
+}
+
+int32 Class_TrackInstance(void *Pointer, char *InstanceId)
+{
+    return Class_TrackInstancePtr(Pointer, InstanceId);
+}
+
+int32 Class_UntrackInstance(void *Pointer)
+{
+    return Class_UntrackInstancePtr(Pointer);
+}
+
+int32 Dictionary_Create(echandle *DictionaryHandle)
+{
+    return Dictionary_CreatePtr(DictionaryHandle);
+}
+
+int32 Dictionary_Delete(echandle *DictionaryHandle)
+{
+    return Dictionary_DeletePtr(DictionaryHandle);
+}
+
+int32 NotificationCenter_AddInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
+{
+    return NotificationCenter_AddInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
+}
+
+int32 NotificationCenter_AddObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
+{
+    return NotificationCenter_AddInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
+}
+
+int32 NotificationCenter_RemoveInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
+{
+    return NotificationCenter_RemoveInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
+}
+
+int32 NotificationCenter_RemoveObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
+{
+    return NotificationCenter_RemoveInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
+}
+
+int32 NotificationCenter_Fire(char *Type, char *Notification, void *Sender, echandle DictionaryHandle)
+{
+    return NotificationCenter_FirePtr(Type, Notification, Sender, DictionaryHandle);
+}
+
+int32 NotificationCenter_FireWithJSON(char *Type, char *Notification, void *Sender, char *Format, ...)
+{
+    va_list ArgumentList;
+    int32 RetVal = FALSE;
+    va_start(ArgumentList, Format);
+    RetVal = NotificationCenter_FireWithJSONVPtr(Type, Notification, Sender, Format, ArgumentList);
+    va_end(ArgumentList);
+    return RetVal;
+}
+
+int32 NotificationCenter_FireAfterDelay(char *Type, char *Notification, void *Sender, int32 DelayMS, echandle DictionaryHandle)
+{
+    return NotificationCenter_FireAfterDelayPtr(Type, Notification, Sender, DelayMS, DictionaryHandle);
+}
+
+int32 NotificationCenter_FireAfterDelayWithJSON(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, ...)
+{
+    va_list ArgumentList;
+    int32 RetVal = FALSE;
+    va_start(ArgumentList, Format);
+    RetVal = NotificationCenter_FireAfterDelayWithJSONVPtr(Type, Notification, Sender, DelayMS, Format, ArgumentList);
+    va_end(ArgumentList);
+    return RetVal;
+}
+
+int32 Interop_GenerateInstanceId(char *String, int32 MaxString)
+{
+    return Interop_GenerateInstanceIdPtr(String, MaxString);
+}
+
+/*********************************************************************/
+
 int32 InteropLib_SetOverride(char *Key, void *Value)
 {
     if (String_Compare(Key, "Class_ConvertFromInstanceId") == TRUE)
@@ -66,93 +153,6 @@ int32 InteropLib_SetOverride(char *Key, void *Value)
         Interop_GenerateInstanceIdPtr = (Interop_GenerateInstanceIdCallback)Value;
 
     return TRUE;
-}
-
-/*********************************************************************/
-
-void *Class_ConvertFromInstanceId(char *InstanceId)
-{
-    return Class_ConvertFromInstanceIdPtr(InstanceId);
-}
-
-char *Class_ConvertToInstanceId(void *Pointer)
-{
-    return Class_ConvertToInstanceIdPtr(Pointer);
-}
-
-int32 Class_TrackInstance(void *Pointer, char *InstanceId)
-{
-    return Class_TrackInstancePtr(Pointer, InstanceId);
-}
-
-int32 Class_UntrackInstance(void *Pointer)
-{
-    return Class_UntrackInstancePtr(Pointer);
-}
-
-int32 Dictionary_Create(echandle *DictionaryHandle)
-{
-    return Dictionary_CreatePtr(DictionaryHandle);
-}
-
-int32 Dictionary_Delete(echandle *DictionaryHandle)
-{
-    return Dictionary_DeletePtr(DictionaryHandle);
-}
-
-int32 NotificationCenter_AddObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_AddInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
-}
-
-int32 NotificationCenter_AddInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_AddInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
-}
-
-int32 NotificationCenter_RemoveObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_RemoveInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
-}
-
-int32 NotificationCenter_RemoveInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_RemoveInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
-}
-
-int32 NotificationCenter_Fire(char *Type, char *Notification, void *Sender, echandle DictionaryHandle)
-{
-    return NotificationCenter_FirePtr(Type, Notification, Sender, DictionaryHandle);
-}
-
-int32 NotificationCenter_FireWithJSON(char *Type, char *Notification, void *Sender, char *Format, ...)
-{
-    va_list ArgumentList;
-    int32 RetVal = FALSE;
-    va_start(ArgumentList, Format);
-    RetVal = NotificationCenter_FireWithJSONVPtr(Type, Notification, Sender, Format, ArgumentList);
-    va_end(ArgumentList);
-    return RetVal;
-}
-
-int32 NotificationCenter_FireAfterDelay(char *Type, char *Notification, void *Sender, int32 DelayMS, echandle DictionaryHandle)
-{
-    return NotificationCenter_FireAfterDelayPtr(Type, Notification, Sender, DelayMS, DictionaryHandle);
-}
-
-int32 NotificationCenter_FireAfterDelayWithJSON(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, ...)
-{
-    va_list ArgumentList;
-    int32 RetVal = FALSE;
-    va_start(ArgumentList, Format);
-    RetVal = NotificationCenter_FireAfterDelayWithJSONVPtr(Type, Notification, Sender, DelayMS, Format, ArgumentList);
-    va_end(ArgumentList);
-    return RetVal;
-}
-
-int32 Interop_GenerateInstanceId(char *String, int32 MaxString)
-{
-    return Interop_GenerateInstanceIdPtr(String, MaxString);
 }
 
 /*********************************************************************/
