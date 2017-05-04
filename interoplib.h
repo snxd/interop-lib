@@ -40,7 +40,7 @@ typedef uint64                                  time64;
 
 /*********************************************************************/
 
-#define INTEROP_MAXSTRING                           (1024 * 8)
+#define INTEROP_MAXSTRING                       (1024 * 8)
 
 /*********************************************************************/
 
@@ -81,6 +81,8 @@ typedef int32 (*Class_UntrackInstanceCallback)(void *Pointer);
 #define String_CompareWithoutCase(s1,s2)        (strcasecmp(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                strncpy(t, s, l)
 #endif
+
+int32 String_ConvertToHex(char *Binary, int32 BinarySize, char *Hex, int32 MaxHex);
 
 /*********************************************************************/
 

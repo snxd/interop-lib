@@ -4,17 +4,24 @@
 
 /*********************************************************************/
 
-#define NOTIFICATIONCENTER_GLOBALSENDER ("Global")
+#define NOTIFICATIONCENTER_GLOBALSENDER             ("Global")
 
 /*********************************************************************/
 
-Class_ConvertFromInstanceIdCallback Class_ConvertFromInstanceIdPtr = NULL;
-Class_ConvertToInstanceIdCallback   Class_ConvertToInstanceIdPtr = NULL;
-Class_TrackInstanceCallback         Class_TrackInstancePtr = NULL;
-Class_UntrackInstanceCallback       Class_UntrackInstancePtr = NULL;
+#define BASE16SYM                                   ("0123456789ABCDEF")
 
-Dictionary_CreateCallback           Dictionary_CreatePtr = NULL;
-Dictionary_DeleteCallback           Dictionary_DeletePtr = NULL;
+#define Base16_EncodeLo(b)                          (BASE16SYM[(b & 0xff) >> 4])
+#define Base16_EncodeHi(b)                          (BASE16SYM[b & 0xF])
+
+/*********************************************************************/
+
+Class_ConvertFromInstanceIdCallback                 Class_ConvertFromInstanceIdPtr = NULL;
+Class_ConvertToInstanceIdCallback                   Class_ConvertToInstanceIdPtr = NULL;
+Class_TrackInstanceCallback                         Class_TrackInstancePtr = NULL;
+Class_UntrackInstanceCallback                       Class_UntrackInstancePtr = NULL;
+
+Dictionary_CreateCallback                           Dictionary_CreatePtr = NULL;
+Dictionary_DeleteCallback                           Dictionary_DeletePtr = NULL;
 
 NotificationCenter_AddInstanceObserverCallback      NotificationCenter_AddInstanceObserverPtr = NULL;
 NotificationCenter_RemoveInstanceObserverCallback   NotificationCenter_RemoveInstanceObserverPtr = NULL;
@@ -25,9 +32,31 @@ NotificationCenter_FireAfterDelayCallback           NotificationCenter_FireAfter
 NotificationCenter_FireAfterDelayWithJSONCallback   NotificationCenter_FireAfterDelayWithJSONPtr = NULL;
 NotificationCenter_FireAfterDelayWithJSONVCallback  NotificationCenter_FireAfterDelayWithJSONVPtr = NULL;
 
-Interop_GenerateInstanceIdCallback  Interop_GenerateInstanceIdPtr = NULL;
+Interop_GenerateInstanceIdCallback                  Interop_GenerateInstanceIdPtr = NULL;
 
 /*********************************************************************/
+
+int32 String_ConvertToHex(char *Binary, int32 BinarySize, char *Hex, int32 MaxHex)
+{
+    int32 ReturnVal = TRUE;
+
+    while ((MaxHex > 2) && (BinarySize > 0))
+    {
+        Hex[0] = Base16_EncodeLo(*Binary);
+        Hex[1] = Base16_EncodeHi(*Binary);
+
+        Hex += 2;
+        MaxHex -= 2;
+        Binary += 1;
+        BinarySize -= 1;
+    }
+
+    if (BinarySize > 0)
+        ReturnVal = FALSE;
+
+    *Hex = 0;
+    return ReturnVal;
+}
 
 void *Class_ConvertFromInstanceId(char *InstanceId)
 {
@@ -127,12 +156,12 @@ int32 InteropLib_SetOverride(char *Key, void *Value)
     else if (String_Compare(Key, "Class_UntrackInstance") == TRUE)
         Class_UntrackInstancePtr = (Class_UntrackInstanceCallback)Value;
     
-    if (String_Compare(Key, "Dictionary_Create") == TRUE)
+    else if (String_Compare(Key, "Dictionary_Create") == TRUE)
         Dictionary_CreatePtr = (Dictionary_CreateCallback)Value;
     else if (String_Compare(Key, "Dictionary_Delete") == TRUE)
         Dictionary_DeletePtr = (Dictionary_DeleteCallback)Value;
 
-    if (String_Compare(Key, "NotificationCenter_AddInstanceObserver") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_AddInstanceObserver") == TRUE)
         NotificationCenter_AddInstanceObserverPtr = (NotificationCenter_AddInstanceObserverCallback)Value;
     else if (String_Compare(Key, "NotificationCenter_RemoveInstanceObserver") == TRUE)
         NotificationCenter_RemoveInstanceObserverPtr = (NotificationCenter_RemoveInstanceObserverCallback)Value;
@@ -149,7 +178,7 @@ int32 InteropLib_SetOverride(char *Key, void *Value)
     else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSONV") == TRUE)
         NotificationCenter_FireAfterDelayWithJSONVPtr = (NotificationCenter_FireAfterDelayWithJSONVCallback)Value;
 
-    if (String_Compare(Key, "Interop_GenerateInstanceId") == TRUE)
+    else if (String_Compare(Key, "Interop_GenerateInstanceId") == TRUE)
         Interop_GenerateInstanceIdPtr = (Interop_GenerateInstanceIdCallback)Value;
 
     return TRUE;
