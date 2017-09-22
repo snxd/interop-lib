@@ -36,7 +36,7 @@ typedef int32 (*Interop_ProcessInstanceCallback)(void* UserPtr);
 int32 Interop_CreateInstance(char *TypeName, char *InstanceId, int32 InstanceIdLength, 
                              void *ExecuteUserPtr, Interop_ExecuteCallback Execute,
                              Interop_InvokeInstanceCallback *Invoke,
-                             Interop_ReleaseInstanceCallback *Remove,
+                             Interop_ReleaseInstanceCallback *Release,
                              Interop_ProcessInstanceCallback *Process,
                              void **UserPtr);
 
