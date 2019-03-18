@@ -77,13 +77,20 @@ typedef int32 (*Class_UntrackInstanceCallback)(void *Pointer);
 #define String_Print                            _snprintf
 #define String_CompareWithoutCase(s1,s2)        (_strcmpi(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                strcpy_s(t, l, s)
+#define String_AtoI64(s)                        _strtoui64(s, NULL, 10)
 #else
 #define String_Print                            snprintf
 #define String_CompareWithoutCase(s1,s2)        (strcasecmp(s1, s2) == 0)
 #define String_CopyLength(t,s,l)                strncpy(t, s, l)
+#define String_AtoI64(s)                        strtoull(s, NULL, 10)
 #endif
 
 int32 String_ConvertToHex(char *Binary, int32 BinarySize, char *Hex, int32 MaxHex);
+
+/*********************************************************************/
+
+int32 Base64_Encode(uint8 *Source, int32 SourceLength, char *Target, int32 MaxTarget, int32 *TargetLength);
+int32 Base64_CalculateEncodeSize(int32 SourceLength, int32 *BytesRequired);
 
 /*********************************************************************/
 

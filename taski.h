@@ -21,6 +21,7 @@ typedef struct ITask {
 typedef int32 (*ITask_ExpandStringCallback)(echandle TaskHandle, void *UserPtr, char *Key, char *Buffer, int32 MaxBuffer);
 typedef int32 (*ITask_EvaluatePathCallback)(echandle TaskHandle, void *UserPtr, char *Path, char *Buffer, int32 MaxBuffer);
 typedef int32 (*ITask_CompleteCallback)(echandle TaskHandle, void *UserPtr, echandle DictionaryHandle);
+typedef int32 (*ITask_RequestCompleteCallback)(echandle TaskHandle, void *UserPtr, uint8 *BufferPtr, int32 BufferSize, int32 ErrorCode, int32 ErrorCodeEx);
 
 /*********************************************************************/
 
@@ -60,7 +61,7 @@ typedef struct ITaskVtbl {
     int32 (*VerbosePrint)(echandle TaskHandle, char *Format, ...);
     int32 (*ExpandString)(echandle TaskHandle, char *String, int32 MaxString);
 
-    int32 (*LoadFromDictionary)(echandle TaskHandle, echandle DictionaryHandle, echandle ItemHandle);
+    int32 (*LoadFromDictionary)(echandle TaskHandle, echandle DictionaryHandle, char *Path);
 
     int32 (*HasError)(echandle TaskHandle, char *Error);
     int32 (*HasWarning)(echandle TaskHandle, char *Warning);
@@ -81,6 +82,8 @@ typedef struct ITaskVtbl {
     int32 (*GetStatusDictionaryHandle)(echandle TaskHandle, echandle *DictionaryHandle);
     int32 (*SetExpandStringCallback)(echandle TaskHandle, void *UserPtr, ITask_ExpandStringCallback Callback);
     int32 (*GetExpandStringCallback)(echandle TaskHandle, void **UserPtr, ITask_ExpandStringCallback *Callback);
+
+    int32 (*RequestURL)(echandle TaskHandle, char *URL, void *UserPtr, ITask_RequestCompleteCallback Callback);
 } ITaskVtbl;
 
 /*********************************************************************/
@@ -195,6 +198,9 @@ typedef struct ITaskVtbl {
     Class_VtblCast(TaskHandle, ITaskVtbl)->SetExpandStringCallback(TaskHandle, UserPtr, Callback)
 #define ITask_GetExpandStringCallback(TaskHandle, UserPtr, Callback) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->GetExpandStringCallback(TaskHandle, UserPtr, Callback)
+
+#define ITask_RequestURL(TaskHandle, URL, UserPtr, Callback) \
+    Class_VtblCast(TaskHandle, ITaskVtbl)->RequestURL(TaskHandle, URL, UserPtr, Callback)
 
 /*********************************************************************/
 

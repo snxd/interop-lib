@@ -57,11 +57,11 @@ typedef struct IDictionaryVtbl {
     int32 (*EnsureList)(echandle DictionaryHandle, char *Key, echandle *ItemHandle, echandle *ItemDictionaryHandle);
     int32 (*EnsureDictionary)(echandle DictionaryHandle, char *Key, echandle *ItemHandle, echandle *ItemDictionaryHandle);
     int32 (*GetTypeByKey)(echandle DictionaryHandle, char *Key, int32 *Type);
-    int32 (*SetStringByKey)(echandle DictionaryHandle, char *Key, char *String, ...);
+    int32 (*SetStringByKey)(echandle DictionaryHandle, char *Key, char *String);
     int32 (*GetStringByKey)(echandle DictionaryHandle, char *Key, char *String, int32 MaxString);
     int32 (*SetStringByKeyV)(echandle DictionaryHandle, char *Key, char *String, va_list ArgumentList);
     int32 (*GetStringPtrByKey)(echandle DictionaryHandle, char *Key, char **StringPtr);
-    int32 (*GetBufferPtrByKey)(echandle DictionaryHandle, char *Key, uint8 **BufferPtr, int32 *BufferLength);
+    int32 (*GetBufferPtrByKey)(echandle DictionaryHandle, char *Key, char **BufferPtr, int32 *BufferLength);
     int32 (*SetInt32ByKey)(echandle DictionaryHandle, char *Key, int32 Value);
     int32 (*GetInt32ByKey)(echandle DictionaryHandle, char *Key, int32 *Value);
     int32 (*SetInt64ByKey)(echandle DictionaryHandle, char *Key, int64 Value);
@@ -87,7 +87,7 @@ typedef struct IDictionaryVtbl {
     int32 (*ItemSetKeyLength)(echandle DictionaryHandle, echandle ItemHandle, char *Key, int32 KeyLength);
     int32 (*ItemGetKey)(echandle DictionaryHandle, echandle ItemHandle, char *Key, int32 MaxKey);
     int32 (*ItemGetKeyPtr)(echandle DictionaryHandle, echandle ItemHandle, char **KeyPtr);
-    int32 (*ItemSetString)(echandle DictionaryHandle, echandle ItemHandle, char *String, ...);
+    int32 (*ItemSetString)(echandle DictionaryHandle, echandle ItemHandle, char *String);
     int32 (*ItemSetStringV)(echandle DictionaryHandle, echandle ItemHandle, char *String, va_list ArgumentList);
     int32 (*ItemGetString)(echandle DictionaryHandle, echandle ItemHandle, char *String, int32 MaxString);
     int32 (*ItemGetStringPtr)(echandle DictionaryHandle, echandle ItemHandle, char **StringPtr);
@@ -123,7 +123,7 @@ typedef struct IDictionaryVtbl {
     int32 (*RemoveMissing)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle);
 
     int32 (*Merge)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, int32 OverwriteExisting);
-    int32 (*MergeAt)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, echandle SourceItemHandle, int32 OverwriteExisting);
+    int32 (*MergeAt)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, echandle SourceItemHandle, int32 Flags);
     int32 (*SkipRoot)(echandle DictionaryHandle, echandle *DataDictionaryHandle);
     int32 (*Reset)(echandle DictionaryHandle);
     int32 (*Dump)(echandle DictionaryHandle);
@@ -142,6 +142,11 @@ typedef struct IDictionaryVtbl {
     int32 (*GetItemKeyChangeCallback)(echandle DictionaryHandle, void **UserPtr, IDictionary_ItemKeyChangeCallback *Callback);
     int32 (*SetItemValueChangeCallback)(echandle DictionaryHandle, void *UserPtr, IDictionary_ItemValueChangeCallback Callback);
     int32 (*GetItemValueChangeCallback)(echandle DictionaryHandle, void **UserPtr, IDictionary_ItemValueChangeCallback *Callback);
+
+    // 5.2
+    int32 (*MergeItem)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, echandle SourceItemHandle, int32 Flags);
+    int32 (*SetStringByKeyPrint)(echandle DictionaryHandle, char *Key, char *String, ...);
+    int32 (*ItemSetStringPrint)(echandle DictionaryHandle, echandle ItemHandle, char *String, ...);
 } IDictionaryVtbl;
 
 /*********************************************************************/
@@ -194,8 +199,10 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->EnsureDictionary(DictionaryHandle, Key, ItemHandle, ItemDictionaryHandle)
 #define IDictionary_GetTypeByKey(DictionaryHandle, Key, Type) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetTypeByKey(DictionaryHandle, Key, Type)
-#define IDictionary_SetStringByKey(DictionaryHandle, Key, String, ...) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetStringByKey(DictionaryHandle, Key, String, __VA_ARGS__)
+#define IDictionary_SetStringByKey(DictionaryHandle, Key, String) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetStringByKey(DictionaryHandle, Key, String)
+#define IDictionary_SetStringByKeyPrint(DictionaryHandle, Key, String, ...) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetStringByKeyPrint(DictionaryHandle, Key, String, __VA_ARGS__)
 #define IDictionary_GetStringByKey(DictionaryHandle, Key, String, MaxString) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetStringByKey(DictionaryHandle, Key, String, MaxString)
 #define IDictionary_SetStringByKeyV(DictionaryHandle, Key, String, ArgumentList) \
@@ -253,8 +260,10 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetKey(DictionaryHandle, ItemHandle, Key, MaxKey)
 #define IDictionary_ItemGetKeyPtr(DictionaryHandle, ItemHandle, KeyPtr) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetKeyPtr(DictionaryHandle, ItemHandle, KeyPtr)
-#define IDictionary_ItemSetString(DictionaryHandle, ItemHandle, String, ...) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetString(DictionaryHandle, ItemHandle, String, __VA_ARGS__)
+#define IDictionary_ItemSetString(DictionaryHandle, ItemHandle, String) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetString(DictionaryHandle, ItemHandle, String)
+#define IDictionary_ItemSetStringPrint(DictionaryHandle, ItemHandle, String, ...) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetStringPrint(DictionaryHandle, ItemHandle, String, __VA_ARGS__)
 #define IDictionary_ItemSetStringV(DictionaryHandle, ItemHandle, String, ArgumentList) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetStringV(DictionaryHandle, ItemHandle, String, ArgumentList)
 #define IDictionary_ItemGetString(DictionaryHandle, ItemHandle, String, MaxString) \
@@ -321,8 +330,10 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)->RemoveMissing(TargetDictionaryHandle, SourceDictionaryHandle)
 #define IDictionary_Merge(TargetDictionaryHandle, SourceDictionaryHandle, OverwriteExisting) \
     Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)->Merge(TargetDictionaryHandle, SourceDictionaryHandle, OverwriteExisting)
-#define IDictionary_MergeAt(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, OverwriteExisting) \
-    Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)->MergeAt(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, OverwriteExisting)
+#define IDictionary_MergeAt(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags) \
+    Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)->MergeAt(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags)
+#define IDictionary_MergeItem(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags) \
+    Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)->MergeItem(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags)
 #define IDictionary_SkipRoot(DictionaryHandle, DataDictionaryHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SkipRoot(DictionaryHandle, DataDictionaryHandle)
 #define IDictionary_Reset(DictionaryHandle) \
