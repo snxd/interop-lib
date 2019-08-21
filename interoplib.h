@@ -50,7 +50,6 @@ typedef struct ClassStruct
     int32    Id;
     int32    RefCount;
     int32   (*Delete)(echandle *ClassHandle);
-    int32   (*DeleteMemType)(echandle *ClassHandle, int32 MemType);
 } ClassStruct;
 
 #define Class_Id(CLASS)                         (((ClassStruct *)(CLASS))->Id)
