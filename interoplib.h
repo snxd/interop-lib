@@ -46,10 +46,10 @@ typedef uint64                                  time64;
 
 typedef struct ClassStruct
 {
-    char     InstanceId[40];
+    char     InstanceId[36];
     int32    Id;
     int32    RefCount;
-    int32   (*Delete)(echandle *ClassHandle);
+    int32   (*Reserved)();
 } ClassStruct;
 
 #define Class_Id(CLASS)                         (((ClassStruct *)(CLASS))->Id)
