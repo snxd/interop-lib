@@ -162,8 +162,8 @@ typedef struct ITaskVtbl {
 #define ITask_ExpandString(TaskHandle, String, MaxString) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->ExpandString(TaskHandle, String, MaxString)
 
-#define ITask_LoadFromDictionary(TaskHandle, DictionaryHandle, ItemHandle) \
-    Class_VtblCast(TaskHandle, ITaskVtbl)->LoadFromDictionary(TaskHandle, DictionaryHandle, ItemHandle)
+#define ITask_LoadFromDictionary(TaskHandle, DictionaryHandle, Path) \
+    Class_VtblCast(TaskHandle, ITaskVtbl)->LoadFromDictionary(TaskHandle, DictionaryHandle, Path)
 
 #define ITask_GetErrorCount(TaskHandle) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->GetErrorCount(TaskHandle)
