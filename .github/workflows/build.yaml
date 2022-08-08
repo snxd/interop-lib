@@ -1,0 +1,46 @@
+name: Build
+on: [workflow_dispatch, pull_request]
+env:
+  TERM: xterm-256color
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Build - Ubuntu
+            runs-on: ubuntu-latest
+
+          - name: Build - Windows (win32)
+            runs-on: windows-latest
+            cmake-args: -A Win32
+
+          - name: Build - Windows (win64)
+            runs-on: windows-latest
+
+          - name: Build - macOS
+            runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Generate project
+      run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release ${{ matrix.cmake-args}}
+
+    - name: Build project
+      run: cmake --build build --config Release
+
+    - name: Upload build errors
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: CMake Errors - ${{ matrix.name }}
+        path: |
+          **/CMakeFiles/CMakeOutput.log
+          **/CMakeFiles/CMakeError.log
+          **/Testing/Temporary/LastTest.log
+        retention-days: 30
