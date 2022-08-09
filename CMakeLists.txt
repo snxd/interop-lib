@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 include_directories(.)
 
@@ -23,3 +23,5 @@ project(interoplib C)
 
 add_library(${PROJECT_NAME} STATIC ${INTEROPLIB_SRC} ${INTEROPLIB_HEADERS})
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
