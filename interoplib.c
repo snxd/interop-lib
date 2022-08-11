@@ -4,44 +4,19 @@
 
 /*********************************************************************/
 
-#define NOTIFICATIONCENTER_GLOBALSENDER             ("Global")
+#define NOTIFICATIONCENTER_GLOBALSENDER ("Global")
 
 /*********************************************************************/
 
-#define BASE16SYM                                   ("0123456789ABCDEF")
+#define BASE16SYM          ("0123456789ABCDEF")
 
-#define Base16_EncodeLo(b)                          (BASE16SYM[(b & 0xff) >> 4])
-#define Base16_EncodeHi(b)                          (BASE16SYM[b & 0xF])
-
-/*********************************************************************/
-
-Class_ConvertFromInstanceIdCallback                 Class_ConvertFromInstanceIdPtr = NULL;
-Class_ConvertToInstanceIdCallback                   Class_ConvertToInstanceIdPtr = NULL;
-Class_TrackInstanceCallback                         Class_TrackInstancePtr = NULL;
-Class_UntrackInstanceCallback                       Class_UntrackInstancePtr = NULL;
-
-Dictionary_CreateCallback                           Dictionary_CreatePtr = NULL;
-Dictionary_DeleteCallback                           Dictionary_DeletePtr = NULL;
-
-NotificationCenter_AddInstanceObserverCallback      NotificationCenter_AddInstanceObserverPtr = NULL;
-NotificationCenter_RemoveInstanceObserverCallback   NotificationCenter_RemoveInstanceObserverPtr = NULL;
-NotificationCenter_FireCallback                     NotificationCenter_FirePtr = NULL;
-NotificationCenter_FireWithJSONCallback             NotificationCenter_FireWithJSONPtr = NULL;
-NotificationCenter_FireWithJSONVCallback            NotificationCenter_FireWithJSONVPtr = NULL;
-NotificationCenter_FireAfterDelayCallback           NotificationCenter_FireAfterDelayPtr = NULL;
-NotificationCenter_FireAfterDelayWithJSONCallback   NotificationCenter_FireAfterDelayWithJSONPtr = NULL;
-NotificationCenter_FireAfterDelayWithJSONVCallback  NotificationCenter_FireAfterDelayWithJSONVPtr = NULL;
-
-Interop_GenerateInstanceIdCallback                  Interop_GenerateInstanceIdPtr = NULL;
+#define Base16_EncodeLo(b) (BASE16SYM[(b & 0xff) >> 4])
+#define Base16_EncodeHi(b) (BASE16SYM[b & 0xF])
 
 /*********************************************************************/
 
-int32 String_ConvertToHex(char *Binary, int32 BinarySize, char *Hex, int32 MaxHex)
-{
-    int32 ReturnVal = TRUE;
-
-    while ((MaxHex > 2) && (BinarySize > 0))
-    {
+bool String_ConvertToHex(char *Binary, int32_t BinarySize, char *Hex, int32_t MaxHex) {
+    while ((MaxHex > 2) && (BinarySize > 0)) {
         Hex[0] = Base16_EncodeLo(*Binary);
         Hex[1] = Base16_EncodeHi(*Binary);
 
@@ -50,219 +25,217 @@ int32 String_ConvertToHex(char *Binary, int32 BinarySize, char *Hex, int32 MaxHe
         Binary += 1;
         BinarySize -= 1;
     }
-
-    if (BinarySize > 0)
-        ReturnVal = FALSE;
-
-    *Hex = 0;
-    return ReturnVal;
+    if (MaxHex > 0)
+        *Hex = 0;
+    return BinarySize == 0;
 }
 
 /*********************************************************************/
 
-static uint8 Base64EncodeLookup[256] = { 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2B, 0x2F, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
+static const uint8_t Base64Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /*********************************************************************/
 
-int32 Base64_Encode(uint8 *Source, int32 SourceLength, char *Target, int32 MaxTarget, int32 *TargetLength)
-{
-    int32 i, n;
-    int32 Done = FALSE;
-    int32 ReturnVal = TRUE;
-    char *TargetStart = Target;
-    char *TargetEnd = Target + (MaxTarget - 4);
-    uint8 InBuffer[3], OutBuffer[4];
-
-
+bool Base64_Encode(const uint8_t *Source, int32_t SourceLength, char *Target, int32_t MaxTarget,
+                   int32_t *TargetLength) {
+    int32_t i = 0, n = 0;
+    uint8_t b1, b2, b3, b4, b5, b6, b7;
 
     *TargetLength = 0;
 
-    while (Done == FALSE)
-    {
-        InBuffer[0] = 0;
-        InBuffer[1] = 0;
-        InBuffer[2] = 0;
-        for (n = 0; n < 3; n++)
-        {
-            InBuffer[n] = *Source++;
-            SourceLength -= 1;
-            if (SourceLength < 0)
-            {
-                Done = TRUE;
+    for (i = 0; i < SourceLength && n + 2 <= MaxTarget; i += 3) {
+        b1 = Source[i], b2 = 0, b3 = 0;
+
+        if ((i + 1) < SourceLength)
+            b2 = Source[i + 1];
+        if ((i + 2) < SourceLength)
+            b3 = Source[i + 2];
+
+        b4 = b1 >> 2;
+        b5 = ((b1 & 0x3) << 4) | (b2 >> 4);
+        b6 = ((b2 & 0xf) << 2) | (b3 >> 6);
+        b7 = b3 & 0x3f;
+
+        Target[n++] = Base64Alphabet[b4];
+        Target[n++] = Base64Alphabet[b5];
+
+        if ((i + 1) < SourceLength) {
+            if (n >= MaxTarget)
                 break;
-            }
-        }
+            Target[n++] = Base64Alphabet[b6];
+        } else if (n < MaxTarget)
+            Target[n++] = '=';
 
-        if (n > 0)
-        {
-            OutBuffer[0] = Base64EncodeLookup[InBuffer[0] >> 2];
-            OutBuffer[1] = Base64EncodeLookup[((InBuffer[0] & 3) << 4) | (InBuffer[1] >> 4)];
-            OutBuffer[2] = Base64EncodeLookup[((InBuffer[1] & 0xF) << 2) | (InBuffer[2] >> 6)];
-            OutBuffer[3] = Base64EncodeLookup[InBuffer[2] & 0x3F];
-
-            /* Replace characters in output stream with "=" pad
-            characters if fewer than three characters were
-            read from the end of the input stream. */
-
-            if (n < 3)
-            {
-                OutBuffer[3] = '=';
-
-                if (n < 2)
-                {
-                    OutBuffer[2] = '=';
-                }
-            }
-            for (i = 0; i < 4; i++)
-                *Target++ = OutBuffer[i];
-            if (Target >= TargetEnd)
-            {
-                ReturnVal = FALSE;
+        if ((i + 2) < SourceLength) {
+            if (n >= MaxTarget)
                 break;
-            }
-        }
+            Target[n++] = Base64Alphabet[b7];
+        } else if (n < MaxTarget)
+            Target[n++] = '=';
     }
 
-    *Target++ = 0;
-    *TargetLength = (int32)(Target - TargetStart);
-    return ReturnVal;
+    *TargetLength = n;
+    if (n < MaxTarget)
+        Target[n] = 0;
+
+    if (i < SourceLength)
+        return false;
+    return true;
 }
 
-int32 Base64_CalculateEncodeSize(int32 SourceLength, int32 *BytesRequired)
-{
+bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired) {
     // Round up to the nearest multiple of 4.
-    *BytesRequired = ((4 * SourceLength / 3) + 3) & ~3;
+    *BytesRequired = (SourceLength + 2) / 3 * 4;
 
     // Include NULL terminator
     *BytesRequired += 1;
 
-    return TRUE;
+    return true;
 }
 
-void *Class_ConvertFromInstanceId(char *InstanceId)
-{
+/*********************************************************************/
+
+Class_ConvertFromInstanceIdCallback Class_ConvertFromInstanceIdPtr = NULL;
+Class_ConvertToInstanceIdCallback Class_ConvertToInstanceIdPtr = NULL;
+Class_TrackInstanceCallback Class_TrackInstancePtr = NULL;
+Class_UntrackInstanceCallback Class_UntrackInstancePtr = NULL;
+
+Dictionary_CreateCallback Dictionary_CreatePtr = NULL;
+Dictionary_DeleteCallback Dictionary_DeletePtr = NULL;
+
+NotificationCenter_AddInstanceObserverCallback NotificationCenter_AddInstanceObserverPtr = NULL;
+NotificationCenter_RemoveInstanceObserverCallback NotificationCenter_RemoveInstanceObserverPtr = NULL;
+NotificationCenter_FireCallback NotificationCenter_FirePtr = NULL;
+NotificationCenter_FireWithJSONCallback NotificationCenter_FireWithJSONPtr = NULL;
+NotificationCenter_FireWithJSONVCallback NotificationCenter_FireWithJSONVPtr = NULL;
+NotificationCenter_FireAfterDelayCallback NotificationCenter_FireAfterDelayPtr = NULL;
+NotificationCenter_FireAfterDelayWithJSONCallback NotificationCenter_FireAfterDelayWithJSONPtr = NULL;
+NotificationCenter_FireAfterDelayWithJSONVCallback NotificationCenter_FireAfterDelayWithJSONVPtr = NULL;
+
+Interop_GenerateInstanceIdCallback Interop_GenerateInstanceIdPtr = NULL;
+
+/*********************************************************************/
+
+void *Class_ConvertFromInstanceId(char *InstanceId) {
     return Class_ConvertFromInstanceIdPtr(InstanceId);
 }
 
-char *Class_ConvertToInstanceId(void *Pointer)
-{
+char *Class_ConvertToInstanceId(void *Pointer) {
     return Class_ConvertToInstanceIdPtr(Pointer);
 }
 
-int32 Class_TrackInstance(void *Pointer, char *InstanceId)
-{
+bool Class_TrackInstance(void *Pointer, char *InstanceId) {
     return Class_TrackInstancePtr(Pointer, InstanceId);
 }
 
-int32 Class_UntrackInstance(void *Pointer)
-{
+bool Class_UntrackInstance(void *Pointer) {
     return Class_UntrackInstancePtr(Pointer);
 }
 
-int32 Dictionary_Create(echandle *DictionaryHandle)
-{
+bool Dictionary_Create(echandle *DictionaryHandle) {
     return Dictionary_CreatePtr(DictionaryHandle);
 }
 
-int32 Dictionary_Delete(echandle *DictionaryHandle)
-{
+bool Dictionary_Delete(echandle *DictionaryHandle) {
     return Dictionary_DeletePtr(DictionaryHandle);
 }
 
-int32 NotificationCenter_AddInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
+bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
+
+bool NotificationCenter_AddInstanceObserver(const char *Type, const char *Notification, const void *Sender,
+                                            void *UserPtr, NotificationCenter_ObserverCallback Callback) {
     return NotificationCenter_AddInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
 }
 
-int32 NotificationCenter_AddObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_AddInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
+bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,
+                                    NotificationCenter_ObserverCallback Callback) {
+    return NotificationCenter_AddInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr,
+                                                  Callback);
 }
 
-int32 NotificationCenter_RemoveInstanceObserver(char *Type, char *Notification, void *Sender, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
+bool NotificationCenter_RemoveInstanceObserver(const char *Type, const char *Notification, const void *Sender,
+                                               void *UserPtr, NotificationCenter_ObserverCallback Callback) {
     return NotificationCenter_RemoveInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
 }
 
-int32 NotificationCenter_RemoveObserver(char *Type, char *Notification, void *UserPtr, NotificationCenter_ObserverCallback Callback)
-{
-    return NotificationCenter_RemoveInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr, Callback);
+bool NotificationCenter_RemoveObserver(const char *Type, const char *Notification, void *UserPtr,
+                                       NotificationCenter_ObserverCallback Callback) {
+    return NotificationCenter_RemoveInstanceObserver(Type, Notification, NOTIFICATIONCENTER_GLOBALSENDER, UserPtr,
+                                                     Callback);
 }
 
-int32 NotificationCenter_Fire(char *Type, char *Notification, void *Sender, echandle DictionaryHandle)
-{
+bool NotificationCenter_Fire(const char *Type, const char *Notification, const void *Sender,
+                             echandle DictionaryHandle) {
     return NotificationCenter_FirePtr(Type, Notification, Sender, DictionaryHandle);
 }
 
-int32 NotificationCenter_FireWithJSON(char *Type, char *Notification, void *Sender, char *Format, ...)
-{
+bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification, const void *Sender, const char *Format,
+                                     ...) {
     va_list ArgumentList;
-    int32 RetVal = FALSE;
+    bool RetVal = false;
     va_start(ArgumentList, Format);
     RetVal = NotificationCenter_FireWithJSONVPtr(Type, Notification, Sender, Format, ArgumentList);
     va_end(ArgumentList);
     return RetVal;
 }
 
-int32 NotificationCenter_FireAfterDelay(char *Type, char *Notification, void *Sender, int32 DelayMS, echandle DictionaryHandle)
-{
+bool NotificationCenter_FireAfterDelay(const char *Type, const char *Notification, const void *Sender, int32_t DelayMS,
+                                       echandle DictionaryHandle) {
     return NotificationCenter_FireAfterDelayPtr(Type, Notification, Sender, DelayMS, DictionaryHandle);
 }
 
-int32 NotificationCenter_FireAfterDelayWithJSON(char *Type, char *Notification, void *Sender, int32 DelayMS, char *Format, ...)
-{
+bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Notification, const void *Sender,
+                                               int32_t DelayMS, const char *Format, ...) {
     va_list ArgumentList;
-    int32 RetVal = FALSE;
+    bool RetVal = false;
     va_start(ArgumentList, Format);
     RetVal = NotificationCenter_FireAfterDelayWithJSONVPtr(Type, Notification, Sender, DelayMS, Format, ArgumentList);
     va_end(ArgumentList);
     return RetVal;
 }
 
-int32 Interop_GenerateInstanceId(char *String, int32 MaxString)
-{
+bool Interop_GenerateInstanceId(char *String, int32_t MaxString) {
     return Interop_GenerateInstanceIdPtr(String, MaxString);
 }
 
 /*********************************************************************/
 
-int32 InteropLib_SetOverride(char *Key, void *Value)
-{
-    if (String_Compare(Key, "Class_ConvertFromInstanceId") == TRUE)
+bool InteropLib_SetOverride(const char *Key, void *Value) {
+    if (String_Compare(Key, "Class_ConvertFromInstanceId") == true)
         Class_ConvertFromInstanceIdPtr = (Class_ConvertFromInstanceIdCallback)Value;
-    else if (String_Compare(Key, "Class_ConvertToInstanceId") == TRUE)
+    else if (String_Compare(Key, "Class_ConvertToInstanceId") == true)
         Class_ConvertToInstanceIdPtr = (Class_ConvertToInstanceIdCallback)Value;
-    else if (String_Compare(Key, "Class_TrackInstance") == TRUE)
+    else if (String_Compare(Key, "Class_TrackInstance") == true)
         Class_TrackInstancePtr = (Class_TrackInstanceCallback)Value;
-    else if (String_Compare(Key, "Class_UntrackInstance") == TRUE)
+    else if (String_Compare(Key, "Class_UntrackInstance") == true)
         Class_UntrackInstancePtr = (Class_UntrackInstanceCallback)Value;
-    
-    else if (String_Compare(Key, "Dictionary_Create") == TRUE)
+
+    else if (String_Compare(Key, "Dictionary_Create") == true)
         Dictionary_CreatePtr = (Dictionary_CreateCallback)Value;
-    else if (String_Compare(Key, "Dictionary_Delete") == TRUE)
+    else if (String_Compare(Key, "Dictionary_Delete") == true)
         Dictionary_DeletePtr = (Dictionary_DeleteCallback)Value;
 
-    else if (String_Compare(Key, "NotificationCenter_AddInstanceObserver") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_AddInstanceObserver") == true)
         NotificationCenter_AddInstanceObserverPtr = (NotificationCenter_AddInstanceObserverCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_RemoveInstanceObserver") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_RemoveInstanceObserver") == true)
         NotificationCenter_RemoveInstanceObserverPtr = (NotificationCenter_RemoveInstanceObserverCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_Fire") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_Fire") == true)
         NotificationCenter_FirePtr = (NotificationCenter_FireCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireWithJSON") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_FireWithJSON") == true)
         NotificationCenter_FireWithJSONPtr = (NotificationCenter_FireWithJSONCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireWithJSONV") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_FireWithJSONV") == true)
         NotificationCenter_FireWithJSONVPtr = (NotificationCenter_FireWithJSONVCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelay") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_FireAfterDelay") == true)
         NotificationCenter_FireAfterDelayPtr = (NotificationCenter_FireAfterDelayCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSON") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSON") == true)
         NotificationCenter_FireAfterDelayWithJSONPtr = (NotificationCenter_FireAfterDelayWithJSONCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSONV") == TRUE)
+    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSONV") == true)
         NotificationCenter_FireAfterDelayWithJSONVPtr = (NotificationCenter_FireAfterDelayWithJSONVCallback)Value;
 
-    else if (String_Compare(Key, "Interop_GenerateInstanceId") == TRUE)
+    else if (String_Compare(Key, "Interop_GenerateInstanceId") == true)
         Interop_GenerateInstanceIdPtr = (Interop_GenerateInstanceIdCallback)Value;
 
-    return TRUE;
+    return true;
 }
 
 /*********************************************************************/
