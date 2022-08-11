@@ -1,5 +1,5 @@
-#ifndef _WORKFLOW_INTERFACE_H_
-#define _WORKFLOW_INTERFACE_H_
+#ifndef WORKFLOW_WORKFLOWI_H_
+#define WORKFLOW_WORKFLOWI_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -7,45 +7,58 @@ extern "C" {
 
 /*********************************************************************/
 
-typedef int32 (*IWorkflow_ExpandStringCallback)(void *UserPtr, char *Key, char *Buffer, int32 MaxBuffer);
-typedef int32 (*IWorkflow_CompleteCallback)(echandle WorkflowHandle, void *UserPtr, echandle DictionaryHandle);
+typedef bool (*IWorkflow_ExpandStringCallback)(void *UserPtr, const char *Key, const char *Value, char *Buffer,
+                                               int32_t MaxBuffer);
+typedef bool (*IWorkflow_CompleteCallback)(echandle WorkflowHandle, void *UserPtr, echandle DictionaryHandle);
 
 /*********************************************************************/
 
 typedef struct IWorkflowVtbl {
-    int32 (*FindTaskByInstanceId)(echandle WorkflowHandle, char *InstanceId, echandle *TaskHandle);
-    int32 (*FindTaskByName)(echandle WorkflowHandle, char *Name, echandle *TaskHandle);
-    int32 (*GetParentTaskHandle)(echandle WorkflowHandle, echandle TaskHandle, echandle *ParentTaskHandle);
+    bool (*FindTaskByInstanceId)(echandle WorkflowHandle, const char *InstanceId, echandle *TaskHandle);
+    bool (*FindTaskByName)(echandle WorkflowHandle, const char *Name, echandle *TaskHandle);
+    bool (*GetParentTaskHandle)(echandle WorkflowHandle, echandle TaskHandle, echandle *ParentTaskHandle);
 
-    int32 (*FindTaskHandler)(echandle WorkflowHandle, char *Type, ITask **Interface);
-    int32 (*RegisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
-    int32 (*UnregisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
+    bool (*FindTaskHandler)(echandle WorkflowHandle, char *Type, ITask **Interface);
+    bool (*RegisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
+    bool (*UnregisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
 
-    int32 (*CanCreateTask)(echandle WorkflowHandle, char *Name);
-    int32 (*CreateTask)(echandle WorkflowHandle, char *Name, echandle DictionaryHandle, echandle ParentTaskHandle, echandle *TaskHandle);
-    int32 (*RunTask)(echandle WorkflowHandle, char *Name, echandle ParentTaskHandle, void *UserPtr, IWorkflow_CompleteCallback Callback);
-    int32 (*QueueTask)(echandle WorkflowHandle, char *Name, echandle ParentTaskHandle, void *UserPtr, IWorkflow_CompleteCallback Callback);
-    int32 (*CancelTasks)(echandle WorkflowHandle);
-    int32 (*ClearTasks)(echandle WorkflowHandle);
-    int32 (*IsTaskRunning)(echandle WorkflowHandle, char *Name);
-    int32 (*IsTaskQueued)(echandle WorkflowHandle, char *Name);
-    int32 (*IsActivated)(echandle WorkflowHandle);
-    int32 (*Complete)(echandle WorkflowHandle, echandle DictionaryHandle);
-    int32 (*Reset)(echandle WorkflowHandle);
+    bool (*CanCreateTask)(echandle WorkflowHandle, const char *Name);
+    bool (*CreateTask)(echandle WorkflowHandle, const char *Name, echandle DictionaryHandle, echandle ParentTaskHandle,
+                       echandle *TaskHandle);
+    bool (*RunTask)(echandle WorkflowHandle, const char *Name, echandle ParentTaskHandle, void *UserPtr,
+                    IWorkflow_CompleteCallback Callback);
+    bool (*QueueTask)(echandle WorkflowHandle, const char *Name, echandle ParentTaskHandle, void *UserPtr,
+                      IWorkflow_CompleteCallback Callback);
+    bool (*CancelTasks)(echandle WorkflowHandle);
+    bool (*ClearTasks)(echandle WorkflowHandle);
+    bool (*IsTaskRunning)(echandle WorkflowHandle, const char *Name);
+    bool (*IsTaskQueued)(echandle WorkflowHandle, const char *Name);
+    bool (*IsActivated)(echandle WorkflowHandle);
+    bool (*Complete)(echandle WorkflowHandle, echandle DictionaryHandle);
+    bool (*Reset)(echandle WorkflowHandle);
 
-    int32 (*AddMacro)(echandle WorkflowHandle, char *Key, char *Value);
-    int32 (*ExpandString)(echandle WorkflowHandle, char *String, int32 MaxString);
-    int32 (*LoadFile)(echandle WorkflowHandle, char *Path);
-    int32 (*LoadBuffer)(echandle WorkflowHandle, char *Buffer, int32 BufferSize, int32 Merge);
-    int32 (*LoadDictionary)(echandle WorkflowHandle, echandle DictionaryHandle, int32 Merge);
-    int32 (*RegisterDefaultTasks)(echandle WorkflowHandle);
-    int32 (*UnregisterDefaultTasks)(echandle WorkflowHandle);
-    int32 (*Print)(echandle WorkflowHandle, char *Format, ...);
+    bool (*AddMacro)(echandle WorkflowHandle, const char *Key, const char *Value);
+    bool (*ExpandString)(echandle WorkflowHandle, char *String, int32_t MaxString);
+    bool (*LoadFile)(echandle WorkflowHandle, const char *Path);
+    bool (*LoadBuffer)(echandle WorkflowHandle, char *Buffer, int32_t BufferSize, int32_t Merge);
+    bool (*LoadDictionary)(echandle WorkflowHandle, echandle DictionaryHandle, int32_t Merge);
+    bool (*RegisterDefaultTasks)(echandle WorkflowHandle);
+    bool (*UnregisterDefaultTasks)(echandle WorkflowHandle);
+    bool (*Print)(echandle WorkflowHandle, const char *Format, ...);
 
-    int32 (*SetExpandStringCallback)(echandle WorkflowHandle, void *UserPtr, IWorkflow_ExpandStringCallback Callback);
-    int32 (*GetExpandStringCallback)(echandle WorkflowHandle, void **UserPtr, IWorkflow_ExpandStringCallback *Callback);
-    int32 (*GetMacroDictionaryHandle)(echandle WorkflowHandle, echandle *MacroDictionaryHandle);
-    int32 (*GetDictionaryHandle)(echandle WorkflowHandle, echandle *DictionaryHandle);
+    bool (*SetExpandStringCallback)(echandle WorkflowHandle, void *UserPtr, IWorkflow_ExpandStringCallback Callback);
+    bool (*GetExpandStringCallback)(echandle WorkflowHandle, void **UserPtr, IWorkflow_ExpandStringCallback *Callback);
+    bool (*GetMacroDictionaryHandle)(echandle WorkflowHandle, echandle *MacroDictionaryHandle);
+    bool (*GetDictionaryHandle)(echandle WorkflowHandle, echandle *DictionaryHandle);
+
+    bool (*IsGlobal)(echandle WorkflowHandle);
+
+    bool (*CreateTaskWithMacros)(echandle WorkflowHandle, const char *Name, echandle DictionaryHandle,
+                                 echandle MacroDictionaryHandle, echandle ParentTaskHandle, echandle *TaskHandle);
+    bool (*RunTaskWithMacros)(echandle WorkflowHandle, const char *Name, echandle MacroDictionaryHandle,
+                              echandle ParentTaskHandle, void *UserPtr, IWorkflow_CompleteCallback Callback);
+    bool (*QueueTaskWithMacros)(echandle WorkflowHandle, const char *Name, echandle MacroDictionaryHandle,
+                                echandle ParentTaskHandle, void *UserPtr, IWorkflow_CompleteCallback Callback);
 } IWorkflowVtbl;
 
 /*********************************************************************/
@@ -68,14 +81,23 @@ typedef struct IWorkflowVtbl {
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->CanCreateTask(WorkflowHandle, Name)
 #define IWorkflow_CreateTask(WorkflowHandle, Name, DictionaryHandle, ParentTaskHandle, SubTaskHandle) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->CreateTask(WorkflowHandle, Name, DictionaryHandle, ParentTaskHandle)
+#define IWorkflow_CreateTaskWithMacros(WorkflowHandle, Name, DictionaryHandle, MacroDictionaryHandle, \
+                                       ParentTaskHandle, SubTaskHandle)                               \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)                                                     \
+        ->CreateTaskWithMacros(WorkflowHandle, Name, DictionaryHandle, MacroDictionaryHandle, ParentTaskHandle)
 #define IWorkflow_RunTask(WorkflowHandle, Name, ParentTaskHandle, UserPtr, Callback) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->RunTask(WorkflowHandle, Name, ParentTaskHandle, UserPtr, Callback)
+#define IWorkflow_RunTaskWithMacros(WorkflowHandle, Name, MacroDictionaryHandle, ParentTaskHandle, UserPtr, Callback) \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)                                                                     \
+        ->RunTaskWithMacros(WorkflowHandle, Name, MacroDictionaryHandle, ParentTaskHandle, UserPtr, Callback)
 #define IWorkflow_QueueTask(WorkflowHandle, Name, ParentTaskHandle, UserPtr, Callback) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->QueueTask(WorkflowHandle, Name, ParentTaskHandle, UserPtr, Callback)
-#define IWorkflow_CancelTasks(WorkflowHandle) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->CancelTasks(WorkflowHandle)
-#define IWorkflow_ClearTasks(WorkflowHandle) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->ClearTasks(WorkflowHandle)
+#define IWorkflow_QueueTaskWithMacros(WorkflowHandle, Name, MacroDictionaryHandle, ParentTaskHandle, UserPtr, \
+                                      Callback)                                                               \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)                                                             \
+        ->QueueTaskWithMacros(WorkflowHandle, Name, MacroDictionaryHandle, ParentTaskHandle, UserPtr, Callback)
+#define IWorkflow_CancelTasks(WorkflowHandle) Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->CancelTasks(WorkflowHandle)
+#define IWorkflow_ClearTasks(WorkflowHandle)  Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->ClearTasks(WorkflowHandle)
 #define IWorkflow_IsTaskRunning(WorkflowHandle, Name) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->IsTaskRunning(WorkflowHandle, Name)
 #define IWorkflow_IsTaskQueued(WorkflowHandle, Name) \
@@ -84,8 +106,7 @@ typedef struct IWorkflowVtbl {
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->IsActivated(WorkflowHandle)
 #define IWorkflow_Complete(WorkflowHandle, DictionaryHandle) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Complete(WorkflowHandle, DictionaryHandle)
-#define IWorkflow_Reset(WorkflowHandle) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Reset(WorkflowHandle)
+#define IWorkflow_Reset(WorkflowHandle) Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Reset(WorkflowHandle)
 
 #define IWorkflow_AddMacro(WorkflowHandle, Key, Value) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->AddMacro(WorkflowHandle, Key, Value)
@@ -102,6 +123,7 @@ typedef struct IWorkflowVtbl {
 #define IWorkflow_Print(WorkflowHandle, Format, ...) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Print(WorkflowHandle, Format, ##__VA_ARGS__)
 
+#define IWorkflow_IsGlobal(WorkflowHandle) Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->IsGlobal(WorkflowHandle)
 #define IWorkflow_SetExpandStringCallback(WorkflowHandle, UserPtr, Callback) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->SetExpandStringCallback(WorkflowHandle, UserPtr, Callback)
 #define IWorkflow_GetExpandStringCallback(WorkflowHandle, UserPtr, Callback) \
@@ -111,8 +133,7 @@ typedef struct IWorkflowVtbl {
 #define IWorkflow_GetDictionaryHandle(WorkflowHandle, DictionaryHandle) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetDictionaryHandle(WorkflowHandle, DictionaryHandle)
 
-#define IWorkflow_RegisterTask(WorkflowHandle, TASK) \
-    IWorkflow_RegisterTaskHandler(WorkflowHandle, &TASK##_INTERFACE)
+#define IWorkflow_RegisterTask(WorkflowHandle, TASK) IWorkflow_RegisterTaskHandler(WorkflowHandle, &TASK##_INTERFACE)
 #define IWorkflow_UnregisterTask(WorkflowHandle, TASK) \
     IWorkflow_UnregisterTaskHandler(WorkflowHandle, &TASK##_INTERFACE)
 
