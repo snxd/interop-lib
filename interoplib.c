@@ -116,7 +116,7 @@ Interop_GenerateInstanceIdCallback Interop_GenerateInstanceIdPtr = NULL;
 
 /*********************************************************************/
 
-void *Class_ConvertFromInstanceId(char *InstanceId) {
+void *Class_ConvertFromInstanceId(const char *InstanceId) {
     return Class_ConvertFromInstanceIdPtr(InstanceId);
 }
 
@@ -124,7 +124,7 @@ char *Class_ConvertToInstanceId(void *Pointer) {
     return Class_ConvertToInstanceIdPtr(Pointer);
 }
 
-bool Class_TrackInstance(void *Pointer, char *InstanceId) {
+bool Class_TrackInstance(void *Pointer, const char *InstanceId) {
     return Class_TrackInstancePtr(Pointer, InstanceId);
 }
 

@@ -36,20 +36,20 @@ typedef struct ClassStruct {
 
 #define Class_Id(CLASS)               (((ClassStruct *)(CLASS))->Id)
 #define Class_InstanceId(CLASS)       (((ClassStruct *)(CLASS))->InstanceId)
-#define Class_Define(TYPE, ID)        static int32 Global##TYPE##ClassId = ID;
+#define Class_Define(TYPE, ID)        static int32_t Global##TYPE##ClassId = ID;
 #define Class_Cast(HANDLE, TYPE)      ((TYPE *)(HANDLE))
-#define Class_VtblCast(PTR, VTBLTYPE) (*(VTBLTYPE **)((uint8 *)PTR + sizeof(ClassStruct)))
+#define Class_VtblCast(PTR, VTBLTYPE) (*(VTBLTYPE **)((uint8_t *)PTR + sizeof(ClassStruct)))
 
 /*********************************************************************/
 
-typedef void *(*Class_ConvertFromInstanceIdCallback)(char *InstanceId);
+typedef void *(*Class_ConvertFromInstanceIdCallback)(const char *InstanceId);
 typedef char *(*Class_ConvertToInstanceIdCallback)(void *Pointer);
-typedef bool (*Class_TrackInstanceCallback)(void *Pointer, char *InstanceId);
+typedef bool (*Class_TrackInstanceCallback)(void *Pointer, const char *InstanceId);
 typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
 /*********************************************************************/
 
-#define Element_Count(x)       ((int32)(sizeof(x) / sizeof((x)[0])))
+#define Element_Count(x)       ((int32_t)(sizeof(x) / sizeof((x)[0])))
 
 #define String_IsEmpty(s)      (*s == 0)
 #define String_Compare(s1, s2) (strcmp(s1, s2) == 0)
@@ -111,9 +111,9 @@ typedef bool (*Interop_GenerateInstanceIdCallback)(char *String, int32_t MaxStri
 
 /*********************************************************************/
 
-void *Class_ConvertFromInstanceId(char *InstanceId);
+void *Class_ConvertFromInstanceId(const char *InstanceId);
 char *Class_ConvertToInstanceId(void *Pointer);
-bool Class_TrackInstance(void *Pointer, char *InstanceId);
+bool Class_TrackInstance(void *Pointer, const char *InstanceId);
 bool Class_UntrackInstance(void *Pointer);
 
 bool Dictionary_Create(echandle *DictionaryHandle);
