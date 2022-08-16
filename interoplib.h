@@ -49,21 +49,6 @@ typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
 /*********************************************************************/
 
-#define String_IsEmpty(s)      (*s == 0)
-#define String_Compare(s1, s2) (strcmp(s1, s2) == 0)
-#define String_Length          strlen
-#if defined(_WINDOWS)
-#define String_Print                      _snprintf
-#define String_CompareWithoutCase(s1, s2) (_strcmpi(s1, s2) == 0)
-#define String_CopyLength(t, s, l)        strcpy_s(t, l, s)
-#define String_AtoI64(s)                  _strtoui64(s, NULL, 10)
-#else
-#define String_Print                      snprintf
-#define String_CompareWithoutCase(s1, s2) (strcasecmp(s1, s2) == 0)
-#define String_CopyLength(t, s, l)        strncpy(t, s, l)
-#define String_AtoI64(s)                  strtoull(s, NULL, 10)
-#endif
-
 bool String_ConvertToHex(char *Binary, int32_t BinarySize, char *Hex, int32_t MaxHex);
 
 /*********************************************************************/
