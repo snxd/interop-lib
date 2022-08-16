@@ -49,8 +49,6 @@ typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
 /*********************************************************************/
 
-#define Element_Count(x)       ((int32_t)(sizeof(x) / sizeof((x)[0])))
-
 #define String_IsEmpty(s)      (*s == 0)
 #define String_Compare(s1, s2) (strcmp(s1, s2) == 0)
 #define String_Length          strlen
