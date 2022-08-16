@@ -201,38 +201,38 @@ bool Interop_GenerateInstanceId(char *String, int32_t MaxString) {
 /*********************************************************************/
 
 bool InteropLib_SetOverride(const char *Key, void *Value) {
-    if (String_Compare(Key, "Class_ConvertFromInstanceId") == true)
+    if (strcmp(Key, "Class_ConvertFromInstanceId") == 0)
         Class_ConvertFromInstanceIdPtr = (Class_ConvertFromInstanceIdCallback)Value;
-    else if (String_Compare(Key, "Class_ConvertToInstanceId") == true)
+    else if (strcmp(Key, "Class_ConvertToInstanceId") == 0)
         Class_ConvertToInstanceIdPtr = (Class_ConvertToInstanceIdCallback)Value;
-    else if (String_Compare(Key, "Class_TrackInstance") == true)
+    else if (strcmp(Key, "Class_TrackInstance") == 0)
         Class_TrackInstancePtr = (Class_TrackInstanceCallback)Value;
-    else if (String_Compare(Key, "Class_UntrackInstance") == true)
+    else if (strcmp(Key, "Class_UntrackInstance") == 0)
         Class_UntrackInstancePtr = (Class_UntrackInstanceCallback)Value;
 
-    else if (String_Compare(Key, "Dictionary_Create") == true)
+    else if (strcmp(Key, "Dictionary_Create") == 0)
         Dictionary_CreatePtr = (Dictionary_CreateCallback)Value;
-    else if (String_Compare(Key, "Dictionary_Delete") == true)
+    else if (strcmp(Key, "Dictionary_Delete") == 0)
         Dictionary_DeletePtr = (Dictionary_DeleteCallback)Value;
 
-    else if (String_Compare(Key, "NotificationCenter_AddInstanceObserver") == true)
+    else if (strcmp(Key, "NotificationCenter_AddInstanceObserver") == 0)
         NotificationCenter_AddInstanceObserverPtr = (NotificationCenter_AddInstanceObserverCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_RemoveInstanceObserver") == true)
+    else if (strcmp(Key, "NotificationCenter_RemoveInstanceObserver") == 0)
         NotificationCenter_RemoveInstanceObserverPtr = (NotificationCenter_RemoveInstanceObserverCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_Fire") == true)
+    else if (strcmp(Key, "NotificationCenter_Fire") == 0)
         NotificationCenter_FirePtr = (NotificationCenter_FireCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireWithJSON") == true)
+    else if (strcmp(Key, "NotificationCenter_FireWithJSON") == 0)
         NotificationCenter_FireWithJSONPtr = (NotificationCenter_FireWithJSONCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireWithJSONV") == true)
+    else if (strcmp(Key, "NotificationCenter_FireWithJSONV") == 0)
         NotificationCenter_FireWithJSONVPtr = (NotificationCenter_FireWithJSONVCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelay") == true)
+    else if (strcmp(Key, "NotificationCenter_FireAfterDelay") == 0)
         NotificationCenter_FireAfterDelayPtr = (NotificationCenter_FireAfterDelayCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSON") == true)
+    else if (strcmp(Key, "NotificationCenter_FireAfterDelayWithJSON") == 0)
         NotificationCenter_FireAfterDelayWithJSONPtr = (NotificationCenter_FireAfterDelayWithJSONCallback)Value;
-    else if (String_Compare(Key, "NotificationCenter_FireAfterDelayWithJSONV") == true)
+    else if (strcmp(Key, "NotificationCenter_FireAfterDelayWithJSONV") == 0)
         NotificationCenter_FireAfterDelayWithJSONVPtr = (NotificationCenter_FireAfterDelayWithJSONVCallback)Value;
 
-    else if (String_Compare(Key, "Interop_GenerateInstanceId") == true)
+    else if (strcmp(Key, "Interop_GenerateInstanceId") == 0)
         Interop_GenerateInstanceIdPtr = (Interop_GenerateInstanceIdCallback)Value;
 
     return true;
