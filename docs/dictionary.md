@@ -1426,39 +1426,6 @@ Gets whether or not duplicates are allowed in the dictionary.
 
 Returns true.
 
-### Dictionary_SetStringPool
-
-Sets whether or not to use a memory pool to allocate strings in the dictionary.
-
-|Name|Type|Description|
-|-|-|-|
-|DictionaryHandle|echandle|Dictionary handle|
-|StringPool|int32_t|Boolean value|
-
-Returns true.
-
-### Dictionary_GetStringPool
-
-Gets whether or not to use a memory pool to allocate strings in the dictionary.
-
-|Name|Type|Description|
-|-|-|-|
-|DictionaryHandle|echandle|Dictionary handle|
-|StringPool|int32_t*|Boolean value|
-
-Returns true.
-
-### Dictionary_SetPoolChunkSize
-
-Sets the item pool chunk size. By default a dictionary allocates space enough for 10 items.
-
-|Name|Type|Description|
-|-|-|-|
-|DictionaryHandle|echandle|Dictionary handle|
-|ChunkSize|int32_t|Number of items to allocate space for at once|
-
-Returns true.
-
 ### Dictionary_ItemRemoveCallback
 
 Callback that is called whenever an item is removed from a dictionary.
