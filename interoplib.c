@@ -95,13 +95,44 @@ bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired) {
 
 /*********************************************************************/
 
+typedef void *(*Class_ConvertFromInstanceIdCallback)(const char *InstanceId);
+typedef char *(*Class_ConvertToInstanceIdCallback)(void *Pointer);
+typedef bool (*Class_TrackInstanceCallback)(void *Pointer, const char *InstanceId);
+typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
+
 Class_ConvertFromInstanceIdCallback Class_ConvertFromInstanceIdPtr = NULL;
 Class_ConvertToInstanceIdCallback Class_ConvertToInstanceIdPtr = NULL;
 Class_TrackInstanceCallback Class_TrackInstancePtr = NULL;
 Class_UntrackInstanceCallback Class_UntrackInstancePtr = NULL;
 
+typedef bool (*Dictionary_CreateCallback)(echandle *DictionaryHandle);
+typedef bool (*Dictionary_DeleteCallback)(echandle *DictionaryHandle);
+
 Dictionary_CreateCallback Dictionary_CreatePtr = NULL;
 Dictionary_DeleteCallback Dictionary_DeletePtr = NULL;
+
+typedef bool (*NotificationCenter_AddInstanceObserverCallback)(const char *Type, const char *Notification,
+                                                               const void *Sender, void *UserPtr,
+                                                               NotificationCenter_ObserverCallback Callback);
+typedef bool (*NotificationCenter_RemoveInstanceObserverCallback)(const char *Type, const char *Notification,
+                                                                  const void *Sender, void *UserPtr,
+                                                                  NotificationCenter_ObserverCallback Callback);
+typedef bool (*NotificationCenter_AssertInstanceCallback)(const void *Sender);
+typedef bool (*NotificationCenter_FireCallback)(const char *Type, const char *Notification, const void *Sender,
+                                                echandle DictionaryHandle);
+typedef bool (*NotificationCenter_FireWithJSONCallback)(const char *Type, const char *Notification, const void *Sender,
+                                                        const char *Format, ...);
+typedef bool (*NotificationCenter_FireWithJSONVCallback)(const char *Type, const char *Notification, const void *Sender,
+                                                         const char *Format, va_list ArgumentList);
+typedef bool (*NotificationCenter_FireAfterDelayCallback)(const char *Type, const char *Notification,
+                                                          const void *Sender, int32_t DelayMS,
+                                                          echandle DictionaryHandle);
+typedef bool (*NotificationCenter_FireAfterDelayWithJSONCallback)(const char *Type, const char *Notification,
+                                                                  const void *Sender, int32_t DelayMS,
+                                                                  const char *Format, ...);
+typedef bool (*NotificationCenter_FireAfterDelayWithJSONVCallback)(const char *Type, const char *Notification,
+                                                                   const void *Sender, int32_t DelayMS,
+                                                                   const char *Format, va_list ArgumentList);
 
 NotificationCenter_AddInstanceObserverCallback NotificationCenter_AddInstanceObserverPtr = NULL;
 NotificationCenter_RemoveInstanceObserverCallback NotificationCenter_RemoveInstanceObserverPtr = NULL;
@@ -111,6 +142,8 @@ NotificationCenter_FireWithJSONVCallback NotificationCenter_FireWithJSONVPtr = N
 NotificationCenter_FireAfterDelayCallback NotificationCenter_FireAfterDelayPtr = NULL;
 NotificationCenter_FireAfterDelayWithJSONCallback NotificationCenter_FireAfterDelayWithJSONPtr = NULL;
 NotificationCenter_FireAfterDelayWithJSONVCallback NotificationCenter_FireAfterDelayWithJSONVPtr = NULL;
+
+typedef bool (*Interop_GenerateInstanceIdCallback)(char *String, int32_t MaxString);
 
 Interop_GenerateInstanceIdCallback Interop_GenerateInstanceIdPtr = NULL;
 
