@@ -150,9 +150,6 @@ typedef struct IDictionaryVtbl {
     bool (*GetCaseSensitive)(echandle DictionaryHandle, bool *CaseSensitive);
     bool (*SetAllowDuplicates)(echandle DictionaryHandle, bool AllowDuplicates);
     bool (*GetAllowDuplicates)(echandle DictionaryHandle, bool *AllowDuplicates);
-    bool (*SetStringPool)(echandle DictionaryHandle, bool StringPool);
-    bool (*GetStringPool)(echandle DictionaryHandle, bool *StringPool);
-    bool (*SetPoolChunkSize)(echandle DictionaryHandle, int32_t ChunkSize);
 
     bool (*SetItemRemoveCallback)(echandle DictionaryHandle, void *UserPtr, IDictionary_ItemRemoveCallback Callback);
     bool (*GetItemRemoveCallback)(echandle DictionaryHandle, void **UserPtr, IDictionary_ItemRemoveCallback *Callback);
@@ -466,12 +463,6 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetAllowDuplicates(DictionaryHandle, AllowDuplicates)
 #define IDictionary_GetAllowDuplicates(DictionaryHandle, AllowDuplicates) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetAllowDuplicatese(DictionaryHandle, AllowDuplicates)
-#define IDictionary_SetStringPool(DictionaryHandle, StringPool) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetStringPool(DictionaryHandle, StringPool)
-#define IDictionary_GetStringPool(DictionaryHandle, StringPool) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetStringPoole(DictionaryHandle, StringPool)
-#define IDictionary_SetPoolChunkSize(DictionaryHandle, PoolChunkSize) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetPoolChunkSize(DictionaryHandle, PoolChunkSize)
 
 #define IDictionary_SetItemRemoveCallback(DictionaryHandle, UserPtr, Callback) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetItemRemoveCallback(DictionaryHandle, UserPtr, Callback)
