@@ -16,10 +16,11 @@ jobs:
 
           - name: Build - Windows (win32)
             runs-on: windows-latest
-            cmake-args: -A Win32
+            cmake-args: -A Win32 -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
 
           - name: Build - Windows (win64)
             runs-on: windows-latest
+            cmake-args: -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
 
           - name: Build - macOS
             runs-on: macos-latest
