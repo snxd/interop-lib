@@ -14,7 +14,6 @@ This repository contains the DIRECT client interoperability interface library. I
 |-|:-|
 |[simple](https://github.com/snxd/interop-simple)|Create a simple object in native code and interact with it in JavaScript.|
 |[steam](https://github.com/snxd/interop-steam)|An interop that provides a JavaScript interface for the Steamworks API.|
-|[priority](https://github.com/snxd/interop-priority)|Very basic cross-platform interop to change the current processes' priority.|
 
 ## Additional Resources
 
