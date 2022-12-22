@@ -87,10 +87,6 @@ bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
 
 /*********************************************************************/
 
-bool InteropLib_SetOverride(const char *Key, void *Value);
-
-/*********************************************************************/
-
 #ifdef __cplusplus
 }
 #endif
