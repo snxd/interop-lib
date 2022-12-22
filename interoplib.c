@@ -8,25 +8,34 @@
 
 /*********************************************************************/
 
-#define BASE16SYM          ("0123456789ABCDEF")
-
-#define Base16_EncodeLo(b) (BASE16SYM[(b & 0xff) >> 4])
-#define Base16_EncodeHi(b) (BASE16SYM[b & 0xF])
+#define BASE16_LOWERCHARS ("0123456789abcdef")
+#define BASE16_UPPERCHARS ("0123456789ABCDEF")
 
 /*********************************************************************/
 
-bool String_ConvertToHex(char *Binary, int32_t BinarySize, char *Hex, int32_t MaxHex) {
+bool String_ConvertToHex(const uint8_t *Binary, int32_t BinarySize, bool Lower, char *Hex, int32_t MaxHex) {
+    char *Base16Symbols = NULL;
+
+    if (Lower == true)
+        Base16Symbols = BASE16_LOWERCHARS;
+    else
+        Base16Symbols = BASE16_UPPERCHARS;
+
     while ((MaxHex > 2) && (BinarySize > 0)) {
-        Hex[0] = Base16_EncodeLo(*Binary);
-        Hex[1] = Base16_EncodeHi(*Binary);
+        Hex[0] = Base16Symbols[*Binary >> 4];
+        Hex[1] = Base16Symbols[*Binary & 0xF];
 
         Hex += 2;
         MaxHex -= 2;
         Binary += 1;
         BinarySize -= 1;
     }
-    if (MaxHex > 0)
-        *Hex = 0;
+    if (MaxHex > 1 && BinarySize > 0)
+        *Hex++ = Base16Symbols[*Binary >> 4];
+
+    if (MaxHex == 0)
+        return false;
+    *Hex = 0;
     return BinarySize == 0;
 }
 

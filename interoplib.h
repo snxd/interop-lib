@@ -42,7 +42,7 @@ typedef struct ClassStruct {
 
 /*********************************************************************/
 
-bool String_ConvertToHex(char *Binary, int32_t BinarySize, char *Hex, int32_t MaxHex);
+bool String_ConvertToHex(const uint8_t *Binary, int32_t BinarySize, bool Lower, char *Hex, int32_t MaxHex);
 
 /*********************************************************************/
 
