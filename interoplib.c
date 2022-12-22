@@ -233,7 +233,7 @@ bool Interop_GenerateInstanceId(char *String, int32_t MaxString) {
 
 /*********************************************************************/
 
-bool InteropLib_SetOverride(const char *Key, void *Value) {
+bool Interop_SetOverride(const char *Key, void *Value) {
     if (strcmp(Key, "Class_ConvertFromInstanceId") == 0)
         Class_ConvertFromInstanceIdPtr = (Class_ConvertFromInstanceIdCallback)Value;
     else if (strcmp(Key, "Class_ConvertToInstanceId") == 0)
