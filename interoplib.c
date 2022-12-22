@@ -100,16 +100,8 @@ typedef char *(*Class_ConvertToInstanceIdCallback)(void *Pointer);
 typedef bool (*Class_TrackInstanceCallback)(void *Pointer, const char *InstanceId);
 typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
-Class_ConvertFromInstanceIdCallback Class_ConvertFromInstanceIdPtr = NULL;
-Class_ConvertToInstanceIdCallback Class_ConvertToInstanceIdPtr = NULL;
-Class_TrackInstanceCallback Class_TrackInstancePtr = NULL;
-Class_UntrackInstanceCallback Class_UntrackInstancePtr = NULL;
-
 typedef bool (*Dictionary_CreateCallback)(echandle *DictionaryHandle);
 typedef bool (*Dictionary_DeleteCallback)(echandle *DictionaryHandle);
-
-Dictionary_CreateCallback Dictionary_CreatePtr = NULL;
-Dictionary_DeleteCallback Dictionary_DeletePtr = NULL;
 
 typedef bool (*NotificationCenter_AddInstanceObserverCallback)(const char *Type, const char *Notification,
                                                                const void *Sender, void *UserPtr,
@@ -134,50 +126,59 @@ typedef bool (*NotificationCenter_FireAfterDelayWithJSONVCallback)(const char *T
                                                                    const void *Sender, int32_t DelayMS,
                                                                    const char *Format, va_list ArgumentList);
 
-NotificationCenter_AddInstanceObserverCallback NotificationCenter_AddInstanceObserverPtr = NULL;
-NotificationCenter_RemoveInstanceObserverCallback NotificationCenter_RemoveInstanceObserverPtr = NULL;
-NotificationCenter_FireCallback NotificationCenter_FirePtr = NULL;
-NotificationCenter_FireWithJSONCallback NotificationCenter_FireWithJSONPtr = NULL;
-NotificationCenter_FireWithJSONVCallback NotificationCenter_FireWithJSONVPtr = NULL;
-NotificationCenter_FireAfterDelayCallback NotificationCenter_FireAfterDelayPtr = NULL;
-NotificationCenter_FireAfterDelayWithJSONCallback NotificationCenter_FireAfterDelayWithJSONPtr = NULL;
-NotificationCenter_FireAfterDelayWithJSONVCallback NotificationCenter_FireAfterDelayWithJSONVPtr = NULL;
-
 typedef bool (*Interop_GenerateInstanceIdCallback)(char *String, int32_t MaxString);
 
-Interop_GenerateInstanceIdCallback Interop_GenerateInstanceIdPtr = NULL;
+typedef struct GlobalInteropLibStruct {
+    Class_ConvertFromInstanceIdCallback Class_ConvertFromInstanceId;
+    Class_ConvertToInstanceIdCallback Class_ConvertToInstanceId;
+    Class_TrackInstanceCallback Class_TrackInstance;
+    Class_UntrackInstanceCallback Class_UntrackInstance;
+    Dictionary_CreateCallback Dictionary_Create;
+    Dictionary_DeleteCallback Dictionary_Delete;
+    NotificationCenter_AddInstanceObserverCallback NotificationCenter_AddInstanceObserver;
+    NotificationCenter_RemoveInstanceObserverCallback NotificationCenter_RemoveInstanceObserver;
+    NotificationCenter_FireCallback NotificationCenter_Fire;
+    NotificationCenter_FireWithJSONCallback NotificationCenter_FireWithJSON;
+    NotificationCenter_FireWithJSONVCallback NotificationCenter_FireWithJSONV;
+    NotificationCenter_FireAfterDelayCallback NotificationCenter_FireAfterDelay;
+    NotificationCenter_FireAfterDelayWithJSONCallback NotificationCenter_FireAfterDelayWithJSON;
+    NotificationCenter_FireAfterDelayWithJSONVCallback NotificationCenter_FireAfterDelayWithJSONV;
+    Interop_GenerateInstanceIdCallback Interop_GenerateInstanceId;
+} GlobalInteropLibStruct;
+
+GlobalInteropLibStruct GlobalInteropLib;
 
 /*********************************************************************/
 
 void *Class_ConvertFromInstanceId(const char *InstanceId) {
-    return Class_ConvertFromInstanceIdPtr(InstanceId);
+    return GlobalInteropLib.Class_ConvertFromInstanceId(InstanceId);
 }
 
 char *Class_ConvertToInstanceId(void *Pointer) {
-    return Class_ConvertToInstanceIdPtr(Pointer);
+    return GlobalInteropLib.Class_ConvertToInstanceId(Pointer);
 }
 
 bool Class_TrackInstance(void *Pointer, const char *InstanceId) {
-    return Class_TrackInstancePtr(Pointer, InstanceId);
+    return GlobalInteropLib.Class_TrackInstance(Pointer, InstanceId);
 }
 
 bool Class_UntrackInstance(void *Pointer) {
-    return Class_UntrackInstancePtr(Pointer);
+    return GlobalInteropLib.Class_UntrackInstance(Pointer);
 }
 
 bool Dictionary_Create(echandle *DictionaryHandle) {
-    return Dictionary_CreatePtr(DictionaryHandle);
+    return GlobalInteropLib.Dictionary_Create(DictionaryHandle);
 }
 
 bool Dictionary_Delete(echandle *DictionaryHandle) {
-    return Dictionary_DeletePtr(DictionaryHandle);
+    return GlobalInteropLib.Dictionary_Delete(DictionaryHandle);
 }
 
 bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
 
 bool NotificationCenter_AddInstanceObserver(const char *Type, const char *Notification, const void *Sender,
                                             void *UserPtr, NotificationCenter_ObserverCallback Callback) {
-    return NotificationCenter_AddInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
+    return GlobalInteropLib.NotificationCenter_AddInstanceObserver(Type, Notification, Sender, UserPtr, Callback);
 }
 
 bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,
@@ -188,7 +189,7 @@ bool NotificationCenter_AddObserver(const char *Type, const char *Notification, 
 
 bool NotificationCenter_RemoveInstanceObserver(const char *Type, const char *Notification, const void *Sender,
                                                void *UserPtr, NotificationCenter_ObserverCallback Callback) {
-    return NotificationCenter_RemoveInstanceObserverPtr(Type, Notification, Sender, UserPtr, Callback);
+    return GlobalInteropLib.NotificationCenter_RemoveInstanceObserver(Type, Notification, Sender, UserPtr, Callback);
 }
 
 bool NotificationCenter_RemoveObserver(const char *Type, const char *Notification, void *UserPtr,
@@ -199,7 +200,7 @@ bool NotificationCenter_RemoveObserver(const char *Type, const char *Notificatio
 
 bool NotificationCenter_Fire(const char *Type, const char *Notification, const void *Sender,
                              echandle DictionaryHandle) {
-    return NotificationCenter_FirePtr(Type, Notification, Sender, DictionaryHandle);
+    return GlobalInteropLib.NotificationCenter_Fire(Type, Notification, Sender, DictionaryHandle);
 }
 
 bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification, const void *Sender, const char *Format,
@@ -207,14 +208,14 @@ bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification,
     va_list ArgumentList;
     bool RetVal = false;
     va_start(ArgumentList, Format);
-    RetVal = NotificationCenter_FireWithJSONVPtr(Type, Notification, Sender, Format, ArgumentList);
+    RetVal = GlobalInteropLib.NotificationCenter_FireWithJSONV(Type, Notification, Sender, Format, ArgumentList);
     va_end(ArgumentList);
     return RetVal;
 }
 
 bool NotificationCenter_FireAfterDelay(const char *Type, const char *Notification, const void *Sender, int32_t DelayMS,
                                        echandle DictionaryHandle) {
-    return NotificationCenter_FireAfterDelayPtr(Type, Notification, Sender, DelayMS, DictionaryHandle);
+    return GlobalInteropLib.NotificationCenter_FireAfterDelay(Type, Notification, Sender, DelayMS, DictionaryHandle);
 }
 
 bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Notification, const void *Sender,
@@ -222,51 +223,55 @@ bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Not
     va_list ArgumentList;
     bool RetVal = false;
     va_start(ArgumentList, Format);
-    RetVal = NotificationCenter_FireAfterDelayWithJSONVPtr(Type, Notification, Sender, DelayMS, Format, ArgumentList);
+    RetVal = GlobalInteropLib.NotificationCenter_FireAfterDelayWithJSONV(Type, Notification, Sender, DelayMS, Format,
+                                                                         ArgumentList);
     va_end(ArgumentList);
     return RetVal;
 }
 
 bool Interop_GenerateInstanceId(char *String, int32_t MaxString) {
-    return Interop_GenerateInstanceIdPtr(String, MaxString);
+    return GlobalInteropLib.Interop_GenerateInstanceId(String, MaxString);
 }
 
 /*********************************************************************/
 
 bool InteropLib_SetOverride(const char *Key, void *Value) {
     if (strcmp(Key, "Class_ConvertFromInstanceId") == 0)
-        Class_ConvertFromInstanceIdPtr = (Class_ConvertFromInstanceIdCallback)Value;
+        GlobalInteropLib.Class_ConvertFromInstanceId = (Class_ConvertFromInstanceIdCallback)Value;
     else if (strcmp(Key, "Class_ConvertToInstanceId") == 0)
-        Class_ConvertToInstanceIdPtr = (Class_ConvertToInstanceIdCallback)Value;
+        GlobalInteropLib.Class_ConvertToInstanceId = (Class_ConvertToInstanceIdCallback)Value;
     else if (strcmp(Key, "Class_TrackInstance") == 0)
-        Class_TrackInstancePtr = (Class_TrackInstanceCallback)Value;
+        GlobalInteropLib.Class_TrackInstance = (Class_TrackInstanceCallback)Value;
     else if (strcmp(Key, "Class_UntrackInstance") == 0)
-        Class_UntrackInstancePtr = (Class_UntrackInstanceCallback)Value;
+        GlobalInteropLib.Class_UntrackInstance = (Class_UntrackInstanceCallback)Value;
 
     else if (strcmp(Key, "Dictionary_Create") == 0)
-        Dictionary_CreatePtr = (Dictionary_CreateCallback)Value;
+        GlobalInteropLib.Dictionary_Create = (Dictionary_CreateCallback)Value;
     else if (strcmp(Key, "Dictionary_Delete") == 0)
-        Dictionary_DeletePtr = (Dictionary_DeleteCallback)Value;
+        GlobalInteropLib.Dictionary_Delete = (Dictionary_DeleteCallback)Value;
 
     else if (strcmp(Key, "NotificationCenter_AddInstanceObserver") == 0)
-        NotificationCenter_AddInstanceObserverPtr = (NotificationCenter_AddInstanceObserverCallback)Value;
+        GlobalInteropLib.NotificationCenter_AddInstanceObserver = (NotificationCenter_AddInstanceObserverCallback)Value;
     else if (strcmp(Key, "NotificationCenter_RemoveInstanceObserver") == 0)
-        NotificationCenter_RemoveInstanceObserverPtr = (NotificationCenter_RemoveInstanceObserverCallback)Value;
+        GlobalInteropLib.NotificationCenter_RemoveInstanceObserver =
+            (NotificationCenter_RemoveInstanceObserverCallback)Value;
     else if (strcmp(Key, "NotificationCenter_Fire") == 0)
-        NotificationCenter_FirePtr = (NotificationCenter_FireCallback)Value;
+        GlobalInteropLib.NotificationCenter_Fire = (NotificationCenter_FireCallback)Value;
     else if (strcmp(Key, "NotificationCenter_FireWithJSON") == 0)
-        NotificationCenter_FireWithJSONPtr = (NotificationCenter_FireWithJSONCallback)Value;
+        GlobalInteropLib.NotificationCenter_FireWithJSON = (NotificationCenter_FireWithJSONCallback)Value;
     else if (strcmp(Key, "NotificationCenter_FireWithJSONV") == 0)
-        NotificationCenter_FireWithJSONVPtr = (NotificationCenter_FireWithJSONVCallback)Value;
+        GlobalInteropLib.NotificationCenter_FireWithJSONV = (NotificationCenter_FireWithJSONVCallback)Value;
     else if (strcmp(Key, "NotificationCenter_FireAfterDelay") == 0)
-        NotificationCenter_FireAfterDelayPtr = (NotificationCenter_FireAfterDelayCallback)Value;
+        GlobalInteropLib.NotificationCenter_FireAfterDelay = (NotificationCenter_FireAfterDelayCallback)Value;
     else if (strcmp(Key, "NotificationCenter_FireAfterDelayWithJSON") == 0)
-        NotificationCenter_FireAfterDelayWithJSONPtr = (NotificationCenter_FireAfterDelayWithJSONCallback)Value;
+        GlobalInteropLib.NotificationCenter_FireAfterDelayWithJSON =
+            (NotificationCenter_FireAfterDelayWithJSONCallback)Value;
     else if (strcmp(Key, "NotificationCenter_FireAfterDelayWithJSONV") == 0)
-        NotificationCenter_FireAfterDelayWithJSONVPtr = (NotificationCenter_FireAfterDelayWithJSONVCallback)Value;
+        GlobalInteropLib.NotificationCenter_FireAfterDelayWithJSONV =
+            (NotificationCenter_FireAfterDelayWithJSONVCallback)Value;
 
     else if (strcmp(Key, "Interop_GenerateInstanceId") == 0)
-        Interop_GenerateInstanceIdPtr = (Interop_GenerateInstanceIdCallback)Value;
+        GlobalInteropLib.Interop_GenerateInstanceId = (Interop_GenerateInstanceIdCallback)Value;
 
     return true;
 }
