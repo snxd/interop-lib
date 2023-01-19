@@ -1,6 +1,12 @@
-## Class
+## Class <!-- omit in toc -->
 
 Provides pointer to guid string translation and visa-versa. Objects are tracked through to JavaScript using guid strings. It is important that your object contain a guid string as the first member to its structure so that the pointer to your object is easily castable to a string. For this purpose use type `ClassStruct` as the type for the first member of the structure.
+
+- [Interop\_GenerateInstanceId](#interop_generateinstanceid)
+- [Class\_ConvertFromInstanceId](#class_convertfrominstanceid)
+- [Class\_ConvertToInstanceId](#class_converttoinstanceid)
+- [Class\_TrackInstance](#class_trackinstance)
+- [Class\_UntrackInstance](#class_untrackinstance)
 
 ### Interop_GenerateInstanceId
 

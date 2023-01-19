@@ -1,6 +1,12 @@
-## Interop
+## Interop <!-- omit in toc -->
 
 Interop shared libraries must `export` the following functions.
+
+- [Interop\_CreateInstance](#interop_createinstance)
+- [Interop\_SetOverride](#interop_setoverride)
+- [Interop\_SetOption](#interop_setoption)
+- [Interop\_Load](#interop_load)
+- [Interop\_Unload](#interop_unload)
 
 ### Interop_CreateInstance
 

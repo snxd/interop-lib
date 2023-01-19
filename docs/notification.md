@@ -2,6 +2,28 @@
 
 The NotificationCenter is responsible for sending and receiving notifications between native C and JavaScript. All notification observers are called back on the main UI thread.
 
+- [NotificationCenter](#notificationcenter)
+  - [NotificationCenter\_ObserverCallback](#notificationcenter_observercallback)
+  - [NotificationCenter\_AddObserver](#notificationcenter_addobserver)
+  - [NotificationCenter\_RemoveObserver](#notificationcenter_removeobserver)
+  - [NotificationCenter\_AddProcessObserver](#notificationcenter_addprocessobserver)
+  - [NotificationCenter\_RemoveProcessObserver](#notificationcenter_removeprocessobserver)
+  - [NotificationCenter\_AddInteropObserver](#notificationcenter_addinteropobserver)
+  - [NotificationCenter\_RemoveInteropObserver](#notificationcenter_removeinteropobserver)
+  - [NotificationCenter\_AddInstanceObserver](#notificationcenter_addinstanceobserver)
+  - [NotificationCenter\_RemoveInstanceObserver](#notificationcenter_removeinstanceobserver)
+  - [NotificationCenter\_Fire](#notificationcenter_fire)
+  - [NotificationCenter\_FireWithJSON](#notificationcenter_firewithjson)
+  - [NotificationCenter\_FireAfterDelay](#notificationcenter_fireafterdelay)
+  - [NotificationCenter\_FireAfterDelayWithJSON](#notificationcenter_fireafterdelaywithjson)
+  - [NotificationCenter\_SetVerbose](#notificationcenter_setverbose)
+- [NotificationCenterInterop](#notificationcenterinterop)
+  - [NotificationCenterInterop\_SetExecuteCallback](#notificationcenterinterop_setexecutecallback)
+  - [NotificationCenterInterop\_GetInstanceId](#notificationcenterinterop_getinstanceid)
+  - [NotificationCenterInterop\_Create](#notificationcenterinterop_create)
+  - [NotificationCenterInterop\_Release](#notificationcenterinterop_release)
+
+
 ### NotificationCenter_ObserverCallback
 
 Callback for when a notification observer is triggered.
