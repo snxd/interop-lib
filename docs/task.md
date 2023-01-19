@@ -254,19 +254,19 @@ Gets the expanded string value of an argument in the task. If the argument is a 
 Returns true if argument exists, false otherwise.
 
 _Task_
-```
+```json
 "runMyTask": {
     "type": "myTask",
     "value": [ "-arg1=test", "--arg2=test3" ]
 }
 ```
 _Code_
-```
+```c
 char Value[1024] = { 0 };
 Task_GetMultiStringArgument(TaskHandle, "value", Value, Element_Count(Value));
 ```
 _Result_
-```
+```bash
 "--arg1=test" "--arg2=test3"
 ```
 
@@ -361,11 +361,11 @@ Sets a status item in the status dictionary with a string value for the task.
 
 Returns true if successful, false otherwise.
 
-```
+```c
 Task_SetStatusString(TaskHandle, "trayStatus", "UI_Initializing")
 ```
 _Status Dictionary:_
-```
+```json
 {
     "status": "UI_Processing",
     "trayStatus": "UI_Initializing"
@@ -384,11 +384,11 @@ Sets a status item in the status dictionary with a number value for the task.
 
 Returns true if successful, false otherwise.
 
-```
+```c
 Task_SetStatusString(TaskHandle, "trayProcessed", 1020)
 ```
 _Status Dictionary:_
-```
+```json
 {
     "status": "UI_Processing",
     "trayStatus": "UI_Initializing",
@@ -448,7 +448,7 @@ Runs a task subaction and calls a callback when complete. Subactions are names o
 
 In the example below, _isReady_ is the name of the subaction and it references another task called _doOurThing_.
 
-```
+```json
 "checkIfReady": {
     "type": "readyCheck",
     "path": "c:\\pathToCheck.exe",
@@ -544,7 +544,7 @@ Prints a message for the task to the debug log.
 
 Returns true.
 
-```
+```c
 Task_Print(TaskHandle, "Hello %s", "world");
 ```
 
@@ -780,7 +780,7 @@ Adds the error from the task's error map specified by the exit code.
 Returns true.
 
 _Task_:
-```
+```json
 "myTask": {
     "type": "uberTask",
     "errorCodeMap": {
@@ -790,11 +790,11 @@ _Task_:
 }
 ```
 _Code_:
-```
+```c
 Task_AddErrorFromMap(TaskHandle, "404", "UI_WhoKnows")
 ```
 _Result Equivalent_:
-```
+```c
 Task_AddError(TaskHandle, "UI_NotFound")
 ```
 
