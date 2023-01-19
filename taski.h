@@ -1,5 +1,4 @@
-#ifndef WORKFLOW_TASKI_H_
-#define WORKFLOW_TASKI_H_
+#pragma once
 
 /*********************************************************************/
 
@@ -205,6 +204,4 @@ typedef struct ITaskVtbl {
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

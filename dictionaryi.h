@@ -1,5 +1,4 @@
-#ifndef CORE_DICTIONARYI_H_
-#define CORE_DICTIONARYI_H_
+#pragma once
 
 /*********************************************************************/
 
@@ -485,6 +484,4 @@ typedef struct IDictionaryVtbl {
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

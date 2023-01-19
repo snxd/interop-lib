@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CORE_CORE_H_
-#define CORE_CORE_H_
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -89,6 +86,4 @@ bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
