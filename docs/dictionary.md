@@ -353,8 +353,13 @@ Returns true if removed successfully, false otherwise.
 
 Loads a key/value pair string into the dictionary.
 
+_Input String_
+```
+key1=value1;key2=value2
+```
+_Output Structure_
 ```json
-key1=value1;key2=value2; => { "key1": "value1", "key2": "value2" }
+{ "key1": "value1", "key2": "value2" }
 ```
 
 |Name|Type|Description|
@@ -371,8 +376,13 @@ Returns true if successful, false otherwise.
 
 Converts a dictionary into a key/value pair string.
 
+_Input Structure_
 ```json
-{ "key1": "value1", "key2": "value2" } => key1=value1;key2=value2;
+{ "key1": "value1", "key2": "value2" }
+```
+_Output String_
+```
+key1=value1;key2=value2;
 ```
 
 |Name|Type|Description|
@@ -471,8 +481,13 @@ Returns true if successful, false otherwise.
 
 Ensures that the path specified exists in the dictionary. If the path does not exist, it will be created.
 
+_Input Path_
+```
+myKey.mySubKey
+```
+_Search Structure_
 ```json
-myKey.mySubKey >> { "myKey": { "mySubKey": { "hello": "world" } } }
+{ "myKey": { "mySubKey": { "hello": "world" } } }
 ```
 
 |Name|Type|Description|
@@ -571,8 +586,13 @@ Returns true if item exists, false otherwise.
 
 Sets the string for an item specified by path.
 
+_Input Path and Value_
+```
+f1.f2.key1=val1
+```
+_Output Structure_
 ```json
-f1.f2.key1=val1 >> { "f1": { "f2": { "key1": "val1" } } }
+{ "f1": { "f2": { "key1": "val1" } } }
 ```
 
 |Name|Type|Description|
@@ -587,8 +607,17 @@ Returns true if successful, false otherwise.
 
 Gets the string for an item specified by path.
 
+_Input Path_
+```
+f1.f2.key1
+```
+_Input Structure_
 ```json
-f1.f2.key1 >> { "f1": { "f2": { "key1": "val1" } } } = val1
+{ "f1": { "f2": { "key1": "val1" } } }
+```
+_Expected Value_
+```
+val1
 ```
 
 |Name|Type|Description|
@@ -1683,8 +1712,17 @@ Returns the string of the type.
 
 Gets the key for a item path.
 
+_Input Path_
+```
+f1.f2.key1
+```
+_Search Structure_
 ```json
-f1.f2.key1 : { "f1": { "f2": { "key1": "val1" } } } = key1
+{ "f1": { "f2": { "key1": "val1" } } }
+```
+_Expected Key_
+```
+key1
 ```
 
 |Name|Type|Description|
@@ -1699,8 +1737,13 @@ Returns true if successful, false otherwise.
 
 Skips the first item in a path.
 
-```json
-f1.f2.key1 >> f2.key1
+_Input Path_
+```
+f1.f2.key1
+```
+_Expected Output Path_
+```
+f2.key1
 ````
 
 |Name|Type|Description|
@@ -1715,7 +1758,8 @@ Returns true if successful, false otherwise.
 
 Gets the parent path.
 
-```json
+_Input Paths and Expected Output Paths_
+```
 f1.f2.key1 >> f1.f2
 f1.f2 >> f1
 ```
@@ -1732,7 +1776,8 @@ Returns true if successful, false otherwise.
 
 Gets whether or not the path has a parent.
 
-```json
+_Path Inputs and Expected Outputs_
+```
 f1.f2.key1 >> true
 f1 >> false
 key1 >> false
