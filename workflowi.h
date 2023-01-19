@@ -1,5 +1,4 @@
-#ifndef WORKFLOW_WORKFLOWI_H_
-#define WORKFLOW_WORKFLOWI_H_
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -141,6 +140,4 @@ typedef struct IWorkflowVtbl {
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

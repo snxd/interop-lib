@@ -1,11 +1,8 @@
 #pragma once
 
 /*! \file interopstub.h
- * Interop implementation functions
+ * Interop exports required by the DIRECT client.
  */
-
-#ifndef CORE_INTEROPSTUB_H_
-#define CORE_INTEROPSTUB_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,5 +69,3 @@ bool Interop_Unload(void);
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // CORE_INTEROPSTUB_H_
