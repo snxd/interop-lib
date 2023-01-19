@@ -199,7 +199,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddNull
 
 Adds a null typed item to the dictionary with a key.
-```
+```json
 { "myKey": null }
 ```
 |Name|Type|Description|
@@ -213,7 +213,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddString
 
 Adds a string typed item to the dictionary with a key and value.
-```
+```json
 { "myKey": "myValue" }
 ```
 |Name|Type|Description|
@@ -228,7 +228,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddInt32
 
 Adds a 32-bit integer typed item to the dictionary with a key and value.
-```
+```json
 { "myTraySize": 1020 }
 ```
 
@@ -244,7 +244,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddInt64
 
 Adds a 64-bit integer typed item to the dictionary with a key and value.
-```
+```json
 { "myTraySize": 1061208000 }
 ```
 
@@ -260,7 +260,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddFloat64
 
 Adds a 64-bit floating integer typed item to the dictionary with a key and value.
-```
+```json
 { "myTraySize": 1020.0 }
 ```
 |Name|Type|Description|
@@ -275,7 +275,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddBoolean
 
 Adds a boolean typed item to the dictionary with a key and value.
-```
+```json
 { "isEnabled": false }
 ```
 |Name|Type|Description|
@@ -290,7 +290,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddList
 
 Adds a list typed item to the dictionary with a key.
-```
+```json
 { "myList": [ ] }
 ```
 |Name|Type|Description|
@@ -309,7 +309,7 @@ Returns true if added successfully, false otherwise.
 ### Dictionary_AddDictionary
 
 Adds a dictionary typed item to the dictionary with a key.
-```
+```json
 { "myObject": { } }
 ```
 |Name|Type|Description|
@@ -353,7 +353,7 @@ Returns true if removed successfully, false otherwise.
 
 Loads a key/value pair string into the dictionary.
 
-```
+```json
 key1=value1;key2=value2; => { "key1": "value1", "key2": "value2" }
 ```
 
@@ -371,7 +371,7 @@ Returns true if successful, false otherwise.
 
 Converts a dictionary into a key/value pair string.
 
-```
+```json
 { "key1": "value1", "key2": "value2" } => key1=value1;key2=value2;
 ```
 
@@ -471,7 +471,7 @@ Returns true if successful, false otherwise.
 
 Ensures that the path specified exists in the dictionary. If the path does not exist, it will be created.
 
-```
+```json
 myKey.mySubKey >> { "myKey": { "mySubKey": { "hello": "world" } } }
 ```
 
@@ -571,7 +571,7 @@ Returns true if item exists, false otherwise.
 
 Sets the string for an item specified by path.
 
-```
+```json
 f1.f2.key1=val1 >> { "f1": { "f2": { "key1": "val1" } } }
 ```
 
@@ -587,7 +587,7 @@ Returns true if successful, false otherwise.
 
 Gets the string for an item specified by path.
 
-```
+```json
 f1.f2.key1 >> { "f1": { "f2": { "key1": "val1" } } } = val1
 ```
 
@@ -1683,7 +1683,7 @@ Returns the string of the type.
 
 Gets the key for a item path.
 
-```
+```json
 f1.f2.key1 : { "f1": { "f2": { "key1": "val1" } } } = key1
 ```
 
@@ -1699,7 +1699,7 @@ Returns true if successful, false otherwise.
 
 Skips the first item in a path.
 
-````
+```json
 f1.f2.key1 >> f2.key1
 ````
 
@@ -1715,7 +1715,7 @@ Returns true if successful, false otherwise.
 
 Gets the parent path.
 
-```
+```json
 f1.f2.key1 >> f1.f2
 f1.f2 >> f1
 ```
@@ -1732,7 +1732,7 @@ Returns true if successful, false otherwise.
 
 Gets whether or not the path has a parent.
 
-```
+```json
 f1.f2.key1 >> true
 f1 >> false
 key1 >> false

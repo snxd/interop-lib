@@ -165,7 +165,7 @@ Fires a notification on the specified sender.
 
 Returns true if non-global tasks running, false otherwise.
 
-```
+```c
 echandle DictionaryHandle = NULL;
 Dictionary_Create(&DictionaryHandle);
 Dictionary_SetInt32ByKey(DictionaryHandle, "sizeOfTray", 1020);
@@ -192,9 +192,10 @@ Fires a notification same as the Fire function except it allows for the construc
 
 Returns true if successful, false otherwise.
 
-```
+```c
 NotificationCenter_FireWithJSON("MyObject", "SizeChanged", InstanceId, "{\"sizeOfTray\":%d}", 1020);
 ```
+
 ### NotificationCenter_FireAfterDelay
 
 Fires a notification same as Fire function, but fires it after a given number of milliseconds has elapsed.
@@ -209,7 +210,7 @@ Fires a notification same as Fire function, but fires it after a given number of
 
 Returns true if successful, false otherwise.
 
-```
+```c
 echandle DictionaryHandle = NULL;
 Dictionary_Create(&DictionaryHandle);
 Dictionary_SetBooleanByKey(DictionaryHandle, "successful", Successful);
@@ -232,7 +233,7 @@ Fires a notification same as FireAfterDelay, except it allows for the constructi
 
 Returns true if successful, false otherwise.
 
-```
+```c
 NotificationCenter_FireAfterDelayWithJSON("MyObject", "Complete", InstanceId, 1000, "{\"successful\":%s}", ((Successful) ? "true": "false"));
 ```
 
@@ -246,7 +247,7 @@ Enables or disables verbose logging for the NotificationCenter.
 
 Returns true.
 
-```
+```c
 NotificationCenter_SetVerbose(true);
 ```
 
