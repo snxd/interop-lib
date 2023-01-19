@@ -1,6 +1,9 @@
-## Base64
+## Base64 <!-- omit in toc -->
 
 Base64 functions useful for sending binary data back to JavaScript.
+
+- [Base64\_Encode](#base64_encode)
+- [Base64\_CalculateEncodeSize](#base64_calculateencodesize)
 
 ### Base64_Encode
 
@@ -18,7 +21,7 @@ bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired);
 
 Return true if successfully, false otherwise. When successful, _TargetLength_ will contain the length of the base64 string.
 
-## Base64_CalculateEncodeSize
+### Base64_CalculateEncodeSize
 
 Calculate the length of the buffer needed for base64 conversion.
 

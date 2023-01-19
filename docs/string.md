@@ -1,6 +1,8 @@
-## String
+## String <!-- omit in toc -->
 
 String helper functions.
+
+- [String\_ConvertToHex](#string_converttohex)
 
 ### String_ConvertToHex
 
