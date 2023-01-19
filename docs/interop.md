@@ -56,13 +56,6 @@ Called to provide function callbacks for DIRECT client functions.
 
 Return true if successfully, false otherwise.
 
-```c
-bool Interop_SetOverride(const char *Key, void *Value) {
-    InteropLib_SetOverride(Key, Value);
-    return true;
-}
-```
-
 ### Interop_SetOption
 
 Called whenever a client configuration option changes.
