@@ -50,7 +50,7 @@ bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired);
 
 /*********************************************************************/
 
-typedef bool (*Generic_PrintCallback)(echandle PrintHandle, const char *Format, ...);
+typedef bool (*Generic_LogCallback)(echandle LogHandle, const char *Format, ...);
 
 /*********************************************************************/
 

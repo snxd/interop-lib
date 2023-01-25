@@ -103,8 +103,8 @@ Use `Dictionary_Create` and `Dictionary_Release` to create and delete dictionari
 - [Dictionary\_ItemGetFirst](#dictionary_itemgetfirst)
 - [Dictionary\_ItemGetLast](#dictionary_itemgetlast)
 - [Dictionary\_ItemGetCount](#dictionary_itemgetcount)
-- [Dictionary\_Print](#dictionary_print)
-- [Dictionary\_Print](#dictionary_print-1)
+- [Dictionary\_Log](#dictionary_log)
+- [Dictionary\_LogTabbed](#dictionary_logtabbed)
 - [Dictionary\_ItemFilterCallback](#dictionary_itemfiltercallback)
 - [Dictionary\_Sync](#dictionary_sync)
 - [Dictionary\_SyncAt](#dictionary_syncat)
@@ -1390,7 +1390,7 @@ Gets the number of items in the dictionary. Does not traverse dictionary or list
 
 Returns true.
 
-### Dictionary_Print
+### Dictionary_Log
 
 Prints a message for the dictionary that is written to the debug log.
 
@@ -1402,7 +1402,7 @@ Prints a message for the dictionary that is written to the debug log.
 
 Returns true.
 
-### Dictionary_Print
+### Dictionary_LogTabbed
 
 Prints an indented message for the dictionary that is written to the debug log.
 
