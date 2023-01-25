@@ -8,7 +8,7 @@ The Dictionary class and its interface are used to store structured data.
 
 **Important:**
 
-Use `Dictionary_Create` and `Dictionary_Delete` to create and delete dictionaries. Then use the corresponding `IDictionary` interface function to call the `Dictionary` function referenced below.
+Use `Dictionary_Create` and `Dictionary_Release` to create and delete dictionaries. Then use the corresponding `IDictionary` interface function to call the `Dictionary` function referenced below.
 
 - [DICTIONARY\_TYPE](#dictionary_type)
 - [DICTIONARY\_MERGE](#dictionary_merge)
@@ -1817,4 +1817,4 @@ Releases an instance of a dictionary when its reference count reaches zero. Decr
 |-|-|-|
 |DictionaryHandle|echandle*|Dictionary handle|
 
-Returns true.
+Returns reference count.
