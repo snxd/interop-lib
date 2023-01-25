@@ -53,7 +53,7 @@ typedef bool (*Generic_PrintCallback)(echandle PrintHandle, const char *Format, 
 /*********************************************************************/
 
 typedef bool (*NotificationCenter_ObserverCallback)(void *UserPtr, const char *Type, const char *Notification,
-                                                    const void *Sender, echandle DictionaryHandle);
+                                                    const char *Sender, echandle DictionaryHandle);
 
 /*********************************************************************/
 
@@ -67,18 +67,18 @@ bool Dictionary_Delete(echandle *DictionaryHandle);
 
 bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,
                                     NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_AddInstanceObserver(const char *Type, const char *Notification, const void *Sender,
+bool NotificationCenter_AddInstanceObserver(const char *Type, const char *Notification, const char *Sender,
                                             void *UserPtr, NotificationCenter_ObserverCallback Callback);
 bool NotificationCenter_RemoveObserver(const char *Type, const char *Notification, void *UserPtr,
                                        NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_RemoveInstanceObserver(const char *Type, const char *Notification, const void *Sender,
+bool NotificationCenter_RemoveInstanceObserver(const char *Type, const char *Notification, const char *Sender,
                                                void *UserPtr, NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_Fire(const char *Type, const char *Notification, const void *Sender, echandle DictionaryHandle);
-bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification, const void *Sender, const char *Format,
+bool NotificationCenter_Fire(const char *Type, const char *Notification, const char *Sender, echandle DictionaryHandle);
+bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification, const char *Sender, const char *Format,
                                      ...);
-bool NotificationCenter_FireAfterDelay(const char *Type, const char *Notification, const void *Sender, int32_t DelayMS,
+bool NotificationCenter_FireAfterDelay(const char *Type, const char *Notification, const char *Sender, int32_t DelayMS,
                                        echandle DictionaryHandle);
-bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Notification, const void *Sender,
+bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Notification, const char *Sender,
                                                int32_t DelayMS, const char *Format, ...);
 bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
 
