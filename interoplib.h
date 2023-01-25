@@ -32,7 +32,8 @@ typedef struct ClassStruct {
 } ClassStruct;
 
 #define Class_Id(CLASS)               (((ClassStruct *)(CLASS))->Id)
-#define Class_InstanceId(CLASS)       (((ClassStruct *)(CLASS))->InstanceId)
+#define Class_InstanceId(CLASS)       ((CLASS)->Class.InstanceId)
+#define Class_InstanceIdUnsafe(PTR)   (((ClassStruct *)(PTR))->InstanceId)
 #define Class_Define(TYPE, ID)        static int32_t Global##TYPE##ClassId = ID;
 #define Class_Cast(HANDLE, TYPE)      ((TYPE *)(HANDLE))
 #define Class_VtblCast(PTR, VTBLTYPE) (*(VTBLTYPE **)((uint8_t *)PTR + sizeof(ClassStruct)))
