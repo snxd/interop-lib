@@ -63,7 +63,7 @@ bool Class_TrackInstance(void *Pointer, const char *InstanceId);
 bool Class_UntrackInstance(void *Pointer);
 
 bool Dictionary_Create(echandle *DictionaryHandle);
-bool Dictionary_Delete(echandle *DictionaryHandle);
+int32_t Dictionary_Release(echandle *DictionaryHandle);
 
 bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,
                                     NotificationCenter_ObserverCallback Callback);

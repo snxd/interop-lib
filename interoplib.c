@@ -110,7 +110,7 @@ typedef bool (*Class_TrackInstanceCallback)(void *Pointer, const char *InstanceI
 typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
 typedef bool (*Dictionary_CreateCallback)(echandle *DictionaryHandle);
-typedef bool (*Dictionary_DeleteCallback)(echandle *DictionaryHandle);
+typedef int32_t (*Dictionary_ReleaseCallback)(echandle *DictionaryHandle);
 
 typedef bool (*NotificationCenter_AddInstanceObserverCallback)(const char *Type, const char *Notification,
                                                                const void *Sender, void *UserPtr,
@@ -143,7 +143,7 @@ typedef struct GlobalInteropLibStruct {
     Class_TrackInstanceCallback Class_TrackInstance;
     Class_UntrackInstanceCallback Class_UntrackInstance;
     Dictionary_CreateCallback Dictionary_Create;
-    Dictionary_DeleteCallback Dictionary_Delete;
+    Dictionary_ReleaseCallback Dictionary_Release;
     NotificationCenter_AddInstanceObserverCallback NotificationCenter_AddInstanceObserver;
     NotificationCenter_RemoveInstanceObserverCallback NotificationCenter_RemoveInstanceObserver;
     NotificationCenter_FireCallback NotificationCenter_Fire;
@@ -179,8 +179,8 @@ bool Dictionary_Create(echandle *DictionaryHandle) {
     return GlobalInteropLib.Dictionary_Create(DictionaryHandle);
 }
 
-bool Dictionary_Delete(echandle *DictionaryHandle) {
-    return GlobalInteropLib.Dictionary_Delete(DictionaryHandle);
+int32_t Dictionary_Release(echandle *DictionaryHandle) {
+    return GlobalInteropLib.Dictionary_Release(DictionaryHandle);
 }
 
 bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
@@ -256,8 +256,8 @@ bool Interop_SetOverride(const char *Key, void *Value) {
 
     else if (strcmp(Key, "Dictionary_Create") == 0)
         GlobalInteropLib.Dictionary_Create = (Dictionary_CreateCallback)Value;
-    else if (strcmp(Key, "Dictionary_Delete") == 0)
-        GlobalInteropLib.Dictionary_Delete = (Dictionary_DeleteCallback)Value;
+    else if (strcmp(Key, "Dictionary_Release") == 0)
+        GlobalInteropLib.Dictionary_Release = (Dictionary_ReleaseCallback)Value;
 
     else if (strcmp(Key, "NotificationCenter_AddInstanceObserver") == 0)
         GlobalInteropLib.NotificationCenter_AddInstanceObserver = (NotificationCenter_AddInstanceObserverCallback)Value;
