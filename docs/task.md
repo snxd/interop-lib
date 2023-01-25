@@ -26,7 +26,7 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_SetStatusNumber](#task_setstatusnumber)
 - [Task\_SetStatusWithDictionary](#task_setstatuswithdictionary)
 - [Task\_SetProgress](#task_setprogress)
-- [Task\_SetPrintIdentifier](#task_setprintidentifier)
+- [Task\_SetLogIdentifier](#task_setlogidentifier)
 - [Task\_CompleteCallback](#task_completecallback)
 - [Task\_RunSubAction](#task_runsubaction)
 - [Task\_RunSubTask](#task_runsubtask)
@@ -34,9 +34,9 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_Complete](#task_complete)
 - [Task\_Cancel](#task_cancel)
 - [Task\_Dump](#task_dump)
-- [Task\_Print](#task_print)
+- [Task\_Log](#task_log)
 - [Task\_VPrint](#task_vprint)
-- [Task\_VerbosePrint](#task_verboseprint)
+- [Task\_VerboseLog](#task_verboselog)
 - [Task\_ExpandString](#task_expandstring)
 - [Task\_ExpandKey](#task_expandkey)
 - [Task\_ExpandDictionary](#task_expanddictionary)
@@ -419,7 +419,7 @@ Sets the progress for the task. This value is added to the status dictionary for
 
 Returns true.
 
-### Task_SetPrintIdentifier
+### Task_SetLogIdentifier
 
 Sets a debug identifier to use when printing debug messages to the debug log for the task.
 
@@ -532,7 +532,7 @@ Prints the task dictionary to the debug log.
 
 Returns true.
 
-### Task_Print
+### Task_Log
 
 Prints a message for the task to the debug log.
 
@@ -545,7 +545,7 @@ Prints a message for the task to the debug log.
 Returns true.
 
 ```c
-Task_Print(TaskHandle, "Hello %s", "world");
+Task_Log(TaskHandle, "Hello %s", "world");
 ```
 
 ### Task_VPrint
@@ -560,7 +560,7 @@ Prints a message for the task to the debug log using a variable argument list.
 
 Returns true.
 
-### Task_VerbosePrint
+### Task_VerboseLog
 
 Prints a message for the task to the debug log when verbose is enabled.
 

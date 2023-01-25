@@ -59,9 +59,9 @@ typedef struct ITaskVtbl {
     bool (*Complete)(echandle TaskHandle, echandle DictionaryHandle);
     bool (*Cancel)(echandle TaskHandle);
     bool (*Dump)(echandle TaskHandle);
-    bool (*Print)(echandle TaskHandle, const char *Format, ...);
+    bool (*Log)(echandle TaskHandle, const char *Format, ...);
     bool (*VPrint)(echandle TaskHandle, int32_t Depth, const char *Format, va_list ArgumentLst);
-    bool (*VLog)(echandle TaskHandle, int32_t Level, const char *Format, ...);
+    bool (*VerboseLog)(echandle TaskHandle, int32_t Level, const char *Format, ...);
     bool (*ExpandString)(echandle TaskHandle, char *String, int32_t MaxString);
 
     bool (*LoadFromDictionary)(echandle TaskHandle, echandle DictionaryHandle, const char *Path);
@@ -94,12 +94,12 @@ typedef struct ITaskVtbl {
 
 /*********************************************************************/
 
-#define ITask_RequireArgument(HND, NAME)                   \
-    if (ITask_HasArgument(HND, NAME) == false) {           \
-        ITask_Print(HND, #NAME " argument not defined\n"); \
-        ITask_AddError(HND, "Task_Error_MissingArg");      \
-        ITask_Complete(HND, NULL);                         \
-        return true;                                       \
+#define ITask_RequireArgument(HND, NAME)                 \
+    if (ITask_HasArgument(HND, NAME) == false) {         \
+        ITask_Log(HND, #NAME " argument not defined\n"); \
+        ITask_AddError(HND, "Task_Error_MissingArg");    \
+        ITask_Complete(HND, NULL);                       \
+        return true;                                     \
     }
 
 #define ITask_SubAction_Null(TaskHandle)     Class_VtblCast(TaskHandle, ITaskVtbl)->SubAction_Null
@@ -147,14 +147,13 @@ typedef struct ITaskVtbl {
 #define ITask_Start(TaskHandle) Class_VtblCast(TaskHandle, ITaskVtbl)->Start(TaskHandle)
 #define ITask_Complete(TaskHandle, DictionaryHandle) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->Complete(TaskHandle, DictionaryHandle)
-#define ITask_Cancel(TaskHandle) Class_VtblCast(TaskHandle, ITaskVtbl)->Cancel(TaskHandle)
-#define ITask_Dump(TaskHandle)   Class_VtblCast(TaskHandle, ITaskVtbl)->Dump(TaskHandle)
-#define ITask_Print(TaskHandle, Format, ...) \
-    Class_VtblCast(TaskHandle, ITaskVtbl)->Print(TaskHandle, Format, ##__VA_ARGS__)
+#define ITask_Cancel(TaskHandle)           Class_VtblCast(TaskHandle, ITaskVtbl)->Cancel(TaskHandle)
+#define ITask_Dump(TaskHandle)             Class_VtblCast(TaskHandle, ITaskVtbl)->Dump(TaskHandle)
+#define ITask_Log(TaskHandle, Format, ...) Class_VtblCast(TaskHandle, ITaskVtbl)->Log(TaskHandle, Format, ##__VA_ARGS__)
 #define ITask_VPrint(TaskHandle, Depth, Format, ArgumentList) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->VPrint(TaskHandle, Depth, Format, ArgumentList)
 #define ITask_VerboseLog(TaskHandle, Level, Format, ...) \
-    Class_VtblCast(TaskHandle, ITaskVtbl)->VerboseLevelPrint(TaskHandle, Level, Format, ##__VA_ARGS__)
+    Class_VtblCast(TaskHandle, ITaskVtbl)->VerboseLog(TaskHandle, Level, Format, ##__VA_ARGS__)
 #define ITask_ExpandString(TaskHandle, String, MaxString) \
     Class_VtblCast(TaskHandle, ITaskVtbl)->ExpandString(TaskHandle, String, MaxString)
 

@@ -127,10 +127,10 @@ typedef struct IDictionaryVtbl {
     bool (*ItemGetLast)(echandle DictionaryHandle, echandle *ItemHandle);
     bool (*ItemGetCount)(echandle DictionaryHandle, int32_t *ItemCount);
 
-    bool (*Print)(echandle DictionaryHandle, const char *Format, ...);
-    bool (*PrintTabbed)(echandle DictionaryHandle, int32_t Depth, const char *Format, ...);
-    bool (*SetPrintCallback)(echandle DictionaryHandle, echandle PrintHandle, Generic_PrintCallback Callback);
-    bool (*GetPrintCallback)(echandle DictionaryHandle, echandle *PrintHandle, Generic_PrintCallback *Callback);
+    bool (*Log)(echandle DictionaryHandle, const char *Format, ...);
+    bool (*LogTabbed)(echandle DictionaryHandle, int32_t Depth, const char *Format, ...);
+    bool (*SetLogCallback)(echandle DictionaryHandle, echandle LogHandle, Generic_LogCallback Callback);
+    bool (*GetLogCallback)(echandle DictionaryHandle, echandle *LogHandle, Generic_LogCallback *Callback);
 
     bool (*Sync)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, void *FilterUserPtr,
                  IDictionary_ItemFilterCallback FilterCallback);
@@ -415,14 +415,14 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_ItemGetCount(DictionaryHandle, ItemCount) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetCount(DictionaryHandle, ItemCount)
 
-#define IDictionary_Print(DictionaryHandle, Format, ...) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Print(DictionaryHandle, Format, __VA_ARGS__)
-#define IDictionary_PrintTabbed(DictionaryHandle, Depth, Format, ...) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->PrintTabbed(DictionaryHandle, Depth, Format, __VA_ARGS__)
-#define IDictionary_SetPrintCallback(DictionaryHandle, PrintHandle, Callback) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetPrintCallback(DictionaryHandle, PrintHandle, Callback)
-#define IDictionary_GetPrintCallback(DictionaryHandle, PrintHandle, Callback) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetPrintCallback(DictionaryHandle, PrintHandle, Callback)
+#define IDictionary_Log(DictionaryHandle, Format, ...) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Log(DictionaryHandle, Format, __VA_ARGS__)
+#define IDictionary_LogTabbed(DictionaryHandle, Depth, Format, ...) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->LogTabbed(DictionaryHandle, Depth, Format, __VA_ARGS__)
+#define IDictionary_SetLogCallback(DictionaryHandle, LogHandle, Callback) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetLogCallback(DictionaryHandle, LogHandle, Callback)
+#define IDictionary_GetLogCallback(DictionaryHandle, LogHandle, Callback) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetLogCallback(DictionaryHandle, LogHandle, Callback)
 
 #define IDictionary_Sync(TargetDictionaryHandle, SourceDictionaryHandle, FilterUserPtr, FilterCallback) \
     Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)                                             \

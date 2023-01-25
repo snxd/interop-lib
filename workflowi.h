@@ -43,7 +43,7 @@ typedef struct IWorkflowVtbl {
     bool (*LoadDictionary)(echandle WorkflowHandle, echandle DictionaryHandle, int32_t Merge);
     bool (*RegisterDefaultTasks)(echandle WorkflowHandle);
     bool (*UnregisterDefaultTasks)(echandle WorkflowHandle);
-    bool (*Print)(echandle WorkflowHandle, const char *Format, ...);
+    bool (*Log)(echandle WorkflowHandle, const char *Format, ...);
 
     bool (*SetExpandStringCallback)(echandle WorkflowHandle, void *UserPtr, IWorkflow_ExpandStringCallback Callback);
     bool (*GetExpandStringCallback)(echandle WorkflowHandle, void **UserPtr, IWorkflow_ExpandStringCallback *Callback);
@@ -119,8 +119,8 @@ typedef struct IWorkflowVtbl {
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->RegisterDefaultTasks(WorkflowHandle)
 #define IWorkflow_UnregisterDefaultTasks(WorkflowHandle) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->UnregisterDefaultTasks(WorkflowHandle)
-#define IWorkflow_Print(WorkflowHandle, Format, ...) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Print(WorkflowHandle, Format, ##__VA_ARGS__)
+#define IWorkflow_Log(WorkflowHandle, Format, ...) \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->Log(WorkflowHandle, Format, ##__VA_ARGS__)
 
 #define IWorkflow_IsGlobal(WorkflowHandle) Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->IsGlobal(WorkflowHandle)
 #define IWorkflow_SetExpandStringCallback(WorkflowHandle, UserPtr, Callback) \
