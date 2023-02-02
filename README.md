@@ -4,6 +4,9 @@ This repository contains the DIRECT client interoperability interface library. I
 
 [Read the Documentation](docs/README.md)
 
+> **Note**
+> Please use the branch corresponding to your version of DIRECT.
+
 ### Requirements
 
 * CMake 3.15 or higher
