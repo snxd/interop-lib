@@ -2,6 +2,8 @@
 
 Tasks perform a specific action depending on the task type. These functions and the associated task interface `ITask` are used to set and retrieve information for a particular task instance.
 
+**Interface**
+
 - [Task\_RequireArgument](#task_requireargument)
 - [Task\_SubAction\_Null](#task_subaction_null)
 - [Task\_SubAction\_Complete](#task_subaction_complete)
@@ -9,9 +11,7 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_IsCancelled](#task_iscancelled)
 - [Task\_GetType](#task_gettype)
 - [Task\_GetTimeElapsed](#task_gettimeelapsed)
-- [Task\_SetName](#task_setname)
 - [Task\_GetName](#task_getname)
-- [Task\_GetNamePtr](#task_getnameptr)
 - [Task\_HasArgument](#task_hasargument)
 - [Task\_GetArgumentPtr](#task_getargumentptr)
 - [Task\_GetArgumentType](#task_getargumenttype)
@@ -35,7 +35,6 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_Cancel](#task_cancel)
 - [Task\_Dump](#task_dump)
 - [Task\_Log](#task_log)
-- [Task\_VPrint](#task_vprint)
 - [Task\_VerboseLog](#task_verboselog)
 - [Task\_ExpandString](#task_expandstring)
 - [Task\_ExpandKey](#task_expandkey)
@@ -55,15 +54,13 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_AddErrorFromMap](#task_adderrorfrommap)
 - [Task\_AddErrorFromDictionary](#task_adderrorfromdictionary)
 - [Task\_GetError](#task_geterror)
-- [Task\_GetErrorPtr](#task_geterrorptr)
 - [Task\_AddWarning](#task_addwarning)
 - [Task\_AddWarningFromDictionary](#task_addwarningfromdictionary)
 - [Task\_GetWarning](#task_getwarning)
-- [Task\_GetWarningPtr](#task_getwarningptr)
 - [Task\_ClearErrors](#task_clearerrors)
 - [Task\_ClearWarnings](#task_clearwarnings)
 - [Task\_SetVerbose](#task_setverbose)
-- [Task\_GetVerbose](#task_getverbose)
+- [Task\_IsVerbose](#task_isverbose)
 - [Task\_SetDelayedCancel](#task_setdelayedcancel)
 - [Task\_GetDelayedCancel](#task_getdelayedcancel)
 - [Task\_GetWorkflowHandle](#task_getworkflowhandle)
@@ -76,11 +73,9 @@ Tasks perform a specific action depending on the task type. These functions and 
 - [Task\_SetExpandStringCallback](#task_setexpandstringcallback)
 - [Task\_GetExpandStringCallback](#task_getexpandstringcallback)
 - [Task\_SetAuthenticateCallback](#task_setauthenticatecallback)
-- [Task\_GetAuthenticateCallback](#task_getauthenticatecallback)
 - [Task\_GetInstanceId](#task_getinstanceid)
 - [Task\_AddRef](#task_addref)
 - [Task\_Release](#task_release)
-
 
 ### Task_RequireArgument
 
@@ -145,7 +140,7 @@ Gets a string containing the task's type.
 |-|-|-|
 |TaskHandle|echandle|Task handle|
 
-Returns a string pointer that contains the task's type.
+Returns a string pointer.
 
 ### Task_GetTimeElapsed
 
@@ -154,20 +149,8 @@ Gets the amount of seconds elapsed while the task was running.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|ElapsedTime|float64*|Second elapsed|
 
-Returns true.
-
-### Task_SetName
-
-Sets the name for the task.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|Name|const char*|Name of task|
-
-Returns true.
+Returns `float64_t`.
 
 ### Task_GetName
 
@@ -176,21 +159,8 @@ Gets the name of the task.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|Name|char*|Name buffer|
-|MaxName|int32_t|Maximum length of name buffer|
 
-Returns true.
-
-### Task_GetNamePtr
-
-Gets a string pointer to the name of the task.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|NamePtr|const char**|Name buffer pointer|
-
-Returns true.
+Returns string.
 
 ### Task_HasArgument
 
@@ -254,19 +224,19 @@ Gets the expanded string value of an argument in the task. If the argument is a 
 Returns true if argument exists, false otherwise.
 
 _Task_
-```json
+```
 "runMyTask": {
     "type": "myTask",
     "value": [ "-arg1=test", "--arg2=test3" ]
 }
 ```
 _Code_
-```c
+```
 char Value[1024] = { 0 };
-Task_GetMultiStringArgument(TaskHandle, "value", Value, Element_Count(Value));
+Task_GetMultiStringArgument(TaskHandle, "value", Value, sizeof(Value));
 ```
 _Result_
-```bash
+```
 "--arg1=test" "--arg2=test3"
 ```
 
@@ -361,11 +331,11 @@ Sets a status item in the status dictionary with a string value for the task.
 
 Returns true if successful, false otherwise.
 
-```c
+```
 Task_SetStatusString(TaskHandle, "trayStatus", "UI_Initializing")
 ```
 _Status Dictionary:_
-```json
+```
 {
     "status": "UI_Processing",
     "trayStatus": "UI_Initializing"
@@ -384,11 +354,11 @@ Sets a status item in the status dictionary with a number value for the task.
 
 Returns true if successful, false otherwise.
 
-```c
+```
 Task_SetStatusString(TaskHandle, "trayProcessed", 1020)
 ```
 _Status Dictionary:_
-```json
+```
 {
     "status": "UI_Processing",
     "trayStatus": "UI_Initializing",
@@ -448,7 +418,7 @@ Runs a task subaction and calls a callback when complete. Subactions are names o
 
 In the example below, _isReady_ is the name of the subaction and it references another task called _doOurThing_.
 
-```json
+```
 "checkIfReady": {
     "type": "readyCheck",
     "path": "c:\\pathToCheck.exe",
@@ -544,21 +514,9 @@ Prints a message for the task to the debug log.
 
 Returns true.
 
-```c
+```
 Task_Log(TaskHandle, "Hello %s", "world");
 ```
-
-### Task_VPrint
-
-Prints a message for the task to the debug log using a variable argument list.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|Format|const char*|Print format specifier string|
-|ArgumentList|va_list|Argument list for print format specifier string|
-
-Returns true.
 
 ### Task_VerboseLog
 
@@ -780,7 +738,7 @@ Adds the error from the task's error map specified by the exit code.
 Returns true.
 
 _Task_:
-```json
+```
 "myTask": {
     "type": "uberTask",
     "errorCodeMap": {
@@ -790,11 +748,11 @@ _Task_:
 }
 ```
 _Code_:
-```c
+```
 Task_AddErrorFromMap(TaskHandle, "404", "UI_WhoKnows")
 ```
 _Result Equivalent_:
-```c
+```
 Task_AddError(TaskHandle, "UI_NotFound")
 ```
 
@@ -817,22 +775,8 @@ Gets the error string at the specified index in the task's error list.
 |-|-|-|
 |TaskHandle|echandle|Task handle|
 |Index|int32_t|Error index|
-|Error|char*|Error string buffer|
-|MaxError|int32_t|Maximum length of error string buffer|
 
-Returns true if index exists, false otherwise.
-
-### Task_GetErrorPtr
-
-Gets a error string pointer at the specified index in the task's error list.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|Index|int32_t|Error index|
-|ErrorPtr|const char**|Error string pointer|
-
-Returns true if index exists, false otherwise.
+Returns string if index exists, false otherwise.
 
 ### Task_AddWarning
 
@@ -865,22 +809,8 @@ Gets the warning string at the specified index in the task's warning list.
 |-|-|-|
 |TaskHandle|echandle|Task handle|
 |Index|int32_t|Warning index|
-|Warning|char*|Warning string buffer|
-|MaxWarning|int32_t|Maximum length of warning string buffer|
 
-Returns true if index exists, false otherwise.
-
-### Task_GetWarningPtr
-
-Gets a warning string pointer at the specified index in the task's warning list.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|Index|int32_t|Warning index|
-|WarningPtr|const char**|Warning string pointer|
-
-Returns true if index exists, false otherwise.
+Returns string if index exists, false otherwise.
 
 ### Task_ClearErrors
 
@@ -913,16 +843,15 @@ Enables or disables verbose logging for the task.
 
 Returns true.
 
-### Task_GetVerbose
+### Task_IsVerbose
 
 Gets whether or not verbose logging is enabled for the task.
 
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|Verbose|int32_t*|Enable boolean value|
 
-Returns true.
+Returns bool.
 
 ### Task_SetDelayedCancel
 
@@ -942,9 +871,8 @@ Gets whether or not delayed cancel is enabled on the task.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|DelayedCancel|int32_t*|Delayed cancel enabled boolean|
 
-Returns true.
+Returns bool.
 
 ### Task_GetWorkflowHandle
 
@@ -953,9 +881,8 @@ Gets the workflow handle for the task.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|WorkflowHandle|echandle*|Workflow handle|
 
-Returns true.
+Returns a workflow handle.
 
 ### Task_GetDictionaryHandle
 
@@ -964,9 +891,8 @@ Gets the dictionary handle for the task. The task dictionary contains the argume
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|DictionaryHandle|echandle*|Argument dictionary handle|
 
-Returns true.
+Returns a dictionary handle.
 
 ### Task_GetStatusDictionaryHandle
 
@@ -975,9 +901,8 @@ Gets the status dictionary handle for the task. The status dictionary contains s
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|DictionaryHandle|echandle*|Status dictionary handle|
 
-Returns true.
+Returns a dictionary handle.
 
 ### Task_GetCertStoreListHandle
 
@@ -986,9 +911,8 @@ Gets the list of certificate stores for the task's "store" argument.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|CertStoreListHandle|echandle*|Certificate store dictionary list handle|
 
-Returns true.
+Returns a dictionary list handle.
 
 ### Task_SetDefaultCertStore
 
@@ -1008,10 +932,8 @@ Gets the default certificate store for the task.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|DefaultCertStore|char*|Default certificate store buffer|
-|MaxDefaultCertStore|int32_t|Maximum length of default certificate store buffer|
 
-Returns true.
+Returns string.
 
 ### Task_ExpandStringCallback
 
@@ -1063,18 +985,6 @@ Sets the authenticate callback to determine whether or not the task should authe
 
 Returns true.
 
-### Task_GetAuthenticateCallback
-
-Gets the authenticate callback for the task.
-
-|Name|Type|Description|
-|-|-|-|
-|TaskHandle|echandle|Task handle|
-|UserPtr|void**|User data pointer|
-|Callback|AuthenticateCallback*|Authenticate callback|
-
-Returns true.
-
 ### Task_GetInstanceId
 
 Gets the instance id for the task.
@@ -1082,10 +992,8 @@ Gets the instance id for the task.
 |Name|Type|Description|
 |-|-|-|
 |TaskHandle|echandle|Task handle|
-|InstanceId|char*|Instance id string buffer|
-|MaxInstanceId|int32_t|Maximum length of instance id string buffer|
 
-Returns true.
+Returns a string.
 
 ### Task_AddRef
 
