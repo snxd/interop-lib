@@ -1,7 +1,5 @@
 #pragma once
 
-/*********************************************************************/
-
 #define IDICTIONARY_KEYRAW_MAX      (120)
 #define IDICTIONARY_KEY_MAX         (IDICTIONARY_KEYRAW_MAX - 1)
 #define IDICTIONARY_PATH_MAX        (4096)
@@ -9,8 +7,8 @@
 #define IDICTIONARY_TYPE_UNKNOWN    (0)
 #define IDICTIONARY_TYPE_NULL       (1)
 #define IDICTIONARY_TYPE_BOOLEAN    (2)
-#define IDICTIONARY_TYPE_INT64      (3)
-#define IDICTIONARY_TYPE_FLOAT64    (4)
+#define IDICTIONARY_TYPE_INT        (3)
+#define IDICTIONARY_TYPE_FLOAT      (4)
 #define IDICTIONARY_TYPE_STRING     (5)
 #define IDICTIONARY_TYPE_LIST       (6)
 #define IDICTIONARY_TYPE_DICTIONARY (7)
@@ -39,13 +37,11 @@ typedef struct IDictionaryVtbl {
     bool (*Add)(echandle DictionaryHandle, const char *Key, echandle *ItemHandle);
     bool (*AddNull)(echandle DictionaryHandle, const char *Key, echandle *ItemHandle);
     bool (*AddString)(echandle DictionaryHandle, const char *Key, const char *Value, echandle *ItemHandle);
-    bool (*AddInt32)(echandle DictionaryHandle, const char *Key, int32_t Value, echandle *ItemHandle);
-    bool (*AddInt64)(echandle DictionaryHandle, const char *Key, int64_t Value, echandle *ItemHandle);
-    bool (*AddFloat64)(echandle DictionaryHandle, const char *Key, float64_t Value, echandle *ItemHandle);
+    bool (*AddInt)(echandle DictionaryHandle, const char *Key, int64_t Value, echandle *ItemHandle);
+    bool (*AddFloat)(echandle DictionaryHandle, const char *Key, float64_t Value, echandle *ItemHandle);
     bool (*AddBoolean)(echandle DictionaryHandle, const char *Key, bool Value, echandle *ItemHandle);
     bool (*AddList)(echandle DictionaryHandle, const char *Key, echandle *ListHandle, echandle *ItemHandle);
     bool (*AddDictionary)(echandle DictionaryHandle, const char *Key, echandle *DictHandle, echandle *ItemHandle);
-    bool (*Append)(echandle DictionaryHandle, const char *Key, echandle *ItemHandle);
     bool (*Insert)(echandle DictionaryHandle, echandle PrevItemHandle, const char *Key, echandle *ItemHandle);
     bool (*Remove)(echandle DictionaryHandle, echandle *ItemHandle);
 
@@ -72,12 +68,11 @@ typedef struct IDictionaryVtbl {
     bool (*GetStringPtrByKey)(echandle DictionaryHandle, const char *Key, const char **StringPtr);
     bool (*GetBufferPtrByKey)(echandle DictionaryHandle, const char *Key, const char **BufferPtr,
                               int32_t *BufferLength);
-    bool (*SetInt32ByKey)(echandle DictionaryHandle, const char *Key, int32_t Value);
+    bool (*SetIntByKey)(echandle DictionaryHandle, const char *Key, int64_t Value);
     bool (*GetInt32ByKey)(echandle DictionaryHandle, const char *Key, int32_t *Value);
-    bool (*SetInt64ByKey)(echandle DictionaryHandle, const char *Key, int64_t Value);
     bool (*GetInt64ByKey)(echandle DictionaryHandle, const char *Key, int64_t *Value);
-    bool (*SetFloat64ByKey)(echandle DictionaryHandle, const char *Key, float64_t Value);
-    bool (*GetFloat64ByKey)(echandle DictionaryHandle, const char *Key, float64_t *Value);
+    bool (*SetFloatByKey)(echandle DictionaryHandle, const char *Key, float64_t Value);
+    bool (*GetFloatByKey)(echandle DictionaryHandle, const char *Key, float64_t *Value);
     bool (*SetBooleanByKey)(echandle DictionaryHandle, const char *Key, bool Value);
     bool (*GetBooleanByKey)(echandle DictionaryHandle, const char *Key, bool *Value);
     bool (*GetListByIndex)(echandle DictionaryHandle, int32_t Index, echandle *ItemDictionaryHandle);
@@ -92,7 +87,7 @@ typedef struct IDictionaryVtbl {
     bool (*ItemIsNull)(echandle DictionaryHandle, echandle ItemHandle);
     bool (*ItemGetIndex)(echandle DictionaryHandle, echandle ItemHandle, int32_t *Index);
     bool (*ItemSetType)(echandle DictionaryHandle, echandle ItemHandle, int32_t Type);
-    bool (*ItemGetType)(echandle DictionaryHandle, echandle ItemHandle, int32_t *Type);
+    int32_t (*ItemGetType)(echandle DictionaryHandle, echandle ItemHandle);
     bool (*ItemCompareType)(echandle DictionaryHandle, echandle ItemHandle, int32_t Type);
     bool (*ItemSetKey)(echandle DictionaryHandle, echandle ItemHandle, const char *Key);
     bool (*ItemSetKeyLength)(echandle DictionaryHandle, echandle ItemHandle, const char *Key, int32_t KeyLength);
@@ -105,11 +100,10 @@ typedef struct IDictionaryVtbl {
     bool (*ItemSetBuffer)(echandle DictionaryHandle, echandle ItemHandle, const char *Buffer, int32_t BufferLength);
     bool (*ItemGetBufferPtr)(echandle DictionaryHandle, echandle ItemHandle, const char **BufferPtr,
                              int32_t *BufferLength);
-    bool (*ItemSetFloat64)(echandle DictionaryHandle, echandle ItemHandle, float64_t Value);
-    bool (*ItemGetFloat64)(echandle DictionaryHandle, echandle ItemHandle, float64_t *Value);
-    bool (*ItemSetInt32)(echandle DictionaryHandle, echandle ItemHandle, int32_t Value);
+    bool (*ItemSetFloat)(echandle DictionaryHandle, echandle ItemHandle, float64_t Value);
+    bool (*ItemGetFloat)(echandle DictionaryHandle, echandle ItemHandle, float64_t *Value);
+    bool (*ItemSetInt)(echandle DictionaryHandle, echandle ItemHandle, int64_t Value);
     bool (*ItemGetInt32)(echandle DictionaryHandle, echandle ItemHandle, int32_t *Value);
-    bool (*ItemSetInt64)(echandle DictionaryHandle, echandle ItemHandle, int64_t Value);
     bool (*ItemGetInt64)(echandle DictionaryHandle, echandle ItemHandle, int64_t *Value);
     bool (*ItemSetBoolean)(echandle DictionaryHandle, echandle ItemHandle, bool Value);
     bool (*ItemGetBoolean)(echandle DictionaryHandle, echandle ItemHandle, bool *Value);
@@ -125,7 +119,7 @@ typedef struct IDictionaryVtbl {
     bool (*ItemGetPrev)(echandle DictionaryHandle, echandle ItemHandle, echandle *PrevItemHandle);
     bool (*ItemGetFirst)(echandle DictionaryHandle, echandle *ItemHandle);
     bool (*ItemGetLast)(echandle DictionaryHandle, echandle *ItemHandle);
-    bool (*ItemGetCount)(echandle DictionaryHandle, int32_t *ItemCount);
+    int32_t (*ItemGetCount)(echandle DictionaryHandle);
 
     bool (*Log)(echandle DictionaryHandle, const char *Format, ...);
     bool (*LogTabbed)(echandle DictionaryHandle, int32_t Depth, const char *Format, ...);
@@ -138,17 +132,17 @@ typedef struct IDictionaryVtbl {
                    void *FilterUserPtr, IDictionary_ItemFilterCallback FilterCallback);
     bool (*RemoveMissing)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle);
 
-    bool (*Merge)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, int32_t OverwriteExisting);
+    bool (*Merge)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, int32_t Flags);
     bool (*MergeAt)(echandle TargetDictionaryHandle, echandle SourceDictionaryHandle, echandle SourceItemHandle,
                     int32_t Flags);
-    bool (*SkipRoot)(echandle DictionaryHandle, echandle *DataDictionaryHandle);
+    echandle (*SkipRoot)(echandle DictionaryHandle);
     bool (*Reset)(echandle DictionaryHandle);
     bool (*Dump)(echandle DictionaryHandle);
 
     bool (*SetCaseSensitive)(echandle DictionaryHandle, bool CaseSensitive);
-    bool (*GetCaseSensitive)(echandle DictionaryHandle, bool *CaseSensitive);
+    bool (*GetCaseSensitive)(echandle DictionaryHandle);
     bool (*SetAllowDuplicates)(echandle DictionaryHandle, bool AllowDuplicates);
-    bool (*GetAllowDuplicates)(echandle DictionaryHandle, bool *AllowDuplicates);
+    bool (*GetAllowDuplicates)(echandle DictionaryHandle);
 
     bool (*SetItemRemoveCallback)(echandle DictionaryHandle, void *UserPtr, IDictionary_ItemRemoveCallback Callback);
     bool (*GetItemRemoveCallback)(echandle DictionaryHandle, void **UserPtr, IDictionary_ItemRemoveCallback *Callback);
@@ -169,19 +163,18 @@ typedef struct IDictionaryVtbl {
     bool (*GetStringByPath)(echandle DictionaryHandle, const char *Path, char *String, int32_t MaxString);
     bool (*GetBufferPtrByPath)(echandle DictionaryHandle, const char *Path, const char **BufferPtr,
                                int32_t *BufferLength);
-    bool (*SetInt32ByPath)(echandle DictionaryHandle, const char *Path, int32_t Value);
+    bool (*SetIntByPath)(echandle DictionaryHandle, const char *Path, int64_t Value);
     bool (*GetInt32ByPath)(echandle DictionaryHandle, const char *Path, int32_t *Value);
-    bool (*SetInt64ByPath)(echandle DictionaryHandle, const char *Path, int64_t Value);
     bool (*GetInt64ByPath)(echandle DictionaryHandle, const char *Path, int64_t *Value);
-    bool (*SetFloat64ByPath)(echandle DictionaryHandle, const char *Path, float64_t Value);
-    bool (*GetFloat64ByPath)(echandle DictionaryHandle, const char *Path, float64_t *Value);
+    bool (*SetFloatByPath)(echandle DictionaryHandle, const char *Path, float64_t Value);
+    bool (*GetFloatByPath)(echandle DictionaryHandle, const char *Path, float64_t *Value);
     bool (*SetBooleanByPath)(echandle DictionaryHandle, const char *Path, bool Value);
     bool (*GetBooleanByPath)(echandle DictionaryHandle, const char *Path, bool *Value);
-    bool (*SkipRootContainer)(echandle DictionaryHandle, echandle *DataDictionaryHandle);
+    echandle (*SkipRootContainer)(echandle DictionaryHandle);
     bool (*ItemSetPrivate)(echandle DictionaryHandle, echandle ItemHandle, bool Private);
-    bool (*ItemGetPrivate)(echandle DictionaryHandle, echandle ItemHandle, bool *Private);
+    bool (*ItemIsPrivate)(echandle DictionaryHandle, echandle ItemHandle);
     bool (*SetPrivateKeys)(echandle DictionaryHandle, bool PrivateKeys);
-    bool (*GetPrivateKeys)(echandle DictionaryHandle, bool *PrivateKeys);
+    bool (*GetPrivateKeys)(echandle DictionaryHandle);
 
     echandle (*AddRef)(echandle DictionaryHandle);
     int32_t (*Release)(echandle *DictionaryHandle);
@@ -207,20 +200,16 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddNull(DictionaryHandle, Key, ItemHandle)
 #define IDictionary_AddString(DictionaryHandle, Key, Value, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddString(DictionaryHandle, Key, Value, ItemHandle)
-#define IDictionary_AddInt32(DictionaryHandle, Key, Value, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddInt32(DictionaryHandle, Key, Value, ItemHandle)
-#define IDictionary_AddInt64(DictionaryHandle, Key, Value, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddInt64(DictionaryHandle, Key, Value, ItemHandle)
-#define IDictionary_AddFloat64(DictionaryHandle, Key, Value, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddFloat64(DictionaryHandle, Key, Value, ItemHandle)
+#define IDictionary_AddInt(DictionaryHandle, Key, Value, ItemHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddInt(DictionaryHandle, Key, Value, ItemHandle)
+#define IDictionary_AddFloat(DictionaryHandle, Key, Value, ItemHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddFloat(DictionaryHandle, Key, Value, ItemHandle)
 #define IDictionary_AddBoolean(DictionaryHandle, Key, Value, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddBoolean(DictionaryHandle, Key, Value, ItemHandle)
 #define IDictionary_AddList(DictionaryHandle, Key, ListHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddList(DictionaryHandle, Key, ListHandle, ItemHandle)
 #define IDictionary_AddDictionary(DictionaryHandle, Key, DictHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->AddDictionary(DictionaryHandle, Key, DictHandle, ItemHandle)
-#define IDictionary_Append(DictionaryHandle, Key, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Append(DictionaryHandle, Key, ItemHandle)
 #define IDictionary_Insert(DictionaryHandle, PrevItemHandle, Key, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Insert(DictionaryHandle, PrevItemHandle, Key, ItemHandle)
 #define IDictionary_Remove(DictionaryHandle, ItemHandle) \
@@ -281,30 +270,26 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_GetBufferPtrByPath(DictionaryHandle, Path, BufferPtr, BufferLength) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                   \
         ->GetBufferPtrByPath(DictionaryHandle, Path, BufferPtr, BufferLength)
-#define IDictionary_SetInt32ByKey(DictionaryHandle, Key, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetInt32ByKey(DictionaryHandle, Key, Value)
-#define IDictionary_SetInt32ByPath(DictionaryHandle, Path, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetInt32ByPath(DictionaryHandle, Path, Value)
+#define IDictionary_SetIntByKey(DictionaryHandle, Key, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetIntByKey(DictionaryHandle, Key, Value)
+#define IDictionary_SetIntByPath(DictionaryHandle, Path, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetIntByPath(DictionaryHandle, Path, Value)
 #define IDictionary_GetInt32ByKey(DictionaryHandle, Key, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetInt32ByKey(DictionaryHandle, Key, Value)
 #define IDictionary_GetInt32ByPath(DictionaryHandle, Path, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetInt32ByPath(DictionaryHandle, Path, Value)
-#define IDictionary_SetInt64ByKey(DictionaryHandle, Key, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetInt64ByKey(DictionaryHandle, Key, Value)
-#define IDictionary_SetInt64ByPath(DictionaryHandle, Path, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetInt64ByPath(DictionaryHandle, Path, Value)
 #define IDictionary_GetInt64ByKey(DictionaryHandle, Key, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetInt64ByKey(DictionaryHandle, Key, Value)
 #define IDictionary_GetInt64ByPath(DictionaryHandle, Key, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetInt64ByPath(DictionaryHandle, Path, Value)
-#define IDictionary_SetFloat64ByKey(DictionaryHandle, Key, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetFloat64ByKey(DictionaryHandle, Key, Value)
-#define IDictionary_SetFloat64ByPath(DictionaryHandle, Path, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetFloat64ByPath(DictionaryHandle, Path, Value)
-#define IDictionary_GetFloat64ByKey(DictionaryHandle, Key, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetFloat64ByKey(DictionaryHandle, Key, Value)
-#define IDictionary_GetFloat64ByPath(DictionaryHandle, Path, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetFloat64ByPath(DictionaryHandle, Path, Value)
+#define IDictionary_SetFloatByKey(DictionaryHandle, Path, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetFloatByKey(DictionaryHandle, Key, Value)
+#define IDictionary_SetFloatByPath(DictionaryHandle, Path, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetFloatByPath(DictionaryHandle, Path, Value)
+#define IDictionary_GetFloatByKey(DictionaryHandle, Key, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetFloatByKey(DictionaryHandle, Key, Value)
+#define IDictionary_GetFloatByPath(DictionaryHandle, Path, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetFloatByPath(DictionaryHandle, Path, Value)
 #define IDictionary_SetBooleanByKey(DictionaryHandle, Key, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetBooleanByKey(DictionaryHandle, Key, Value)
 #define IDictionary_SetBooleanByPath(DictionaryHandle, Path, Value) \
@@ -333,15 +318,15 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                             \
         ->ItemGetPath(DictionaryHandle, ItemHandle, TopDictionaryHandle, Path, MaxPath)
 #define IDictionary_ItemIsContainer(DictionaryHandle, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetPath(DictionaryHandle, ItemHandle)
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemIsContainer(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemIsNull(DictionaryHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemIsNull(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemGetIndex(DictionaryHandle, ItemHandle, Index) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetIndex(DictionaryHandle, ItemHandle, Index)
 #define IDictionary_ItemSetType(DictionaryHandle, ItemHandle, Type) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetType(DictionaryHandle, ItemHandle, Type)
-#define IDictionary_ItemGetType(DictionaryHandle, ItemHandle, Type) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetType(DictionaryHandle, ItemHandle, Type)
+#define IDictionary_ItemGetType(DictionaryHandle, ItemHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetType(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemCompareType(DictionaryHandle, ItemHandle, Type) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemCompareType(DictionaryHandle, ItemHandle, Type)
 #define IDictionary_ItemSetKey(DictionaryHandle, ItemHandle, Key) \
@@ -369,16 +354,14 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_ItemGetBufferPtr(DictionaryHandle, ItemHandle, BufferPtr, BufferLength) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                       \
         ->ItemGetBufferPtr(DictionaryHandle, ItemHandle, BufferPtr, BufferLength)
-#define IDictionary_ItemSetFloat64(DictionaryHandle, ItemHandle, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetFloat64(DictionaryHandle, ItemHandle, Value)
-#define IDictionary_ItemGetFloat64(DictionaryHandle, ItemHandle, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetFloat64(DictionaryHandle, ItemHandle, Value)
-#define IDictionary_ItemSetInt32(DictionaryHandle, ItemHandle, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetInt32(DictionaryHandle, ItemHandle, Value)
+#define IDictionary_ItemSetFloat(DictionaryHandle, ItemHandle, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetFloat(DictionaryHandle, ItemHandle, Value)
+#define IDictionary_ItemGetFloat(DictionaryHandle, ItemHandle, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetFloat(DictionaryHandle, ItemHandle, Value)
+#define IDictionary_ItemSetInt(DictionaryHandle, ItemHandle, Value) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetInt(DictionaryHandle, ItemHandle, Value)
 #define IDictionary_ItemGetInt32(DictionaryHandle, ItemHandle, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetInt32(DictionaryHandle, ItemHandle, Value)
-#define IDictionary_ItemSetInt64(DictionaryHandle, ItemHandle, Value) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetInt64(DictionaryHandle, ItemHandle, Value)
 #define IDictionary_ItemGetInt64(DictionaryHandle, ItemHandle, Value) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetInt64(DictionaryHandle, ItemHandle, Value)
 #define IDictionary_ItemSetBoolean(DictionaryHandle, ItemHandle, Value) \
@@ -387,8 +370,8 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetBoolean(DictionaryHandle, ItemHandle, Value)
 #define IDictionary_ItemSetPrivate(DictionaryHandle, ItemHandle, Private) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetPrivate(DictionaryHandle, ItemHandle, Private)
-#define IDictionary_ItemGetPrivate(DictionaryHandle, ItemHandle, Private) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetPrivate(DictionaryHandle, ItemHandle, Private)
+#define IDictionary_ItemIsPrivate(DictionaryHandle, ItemHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemIsPrivate(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemSetNull(DictionaryHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemSetNull(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemGetDictionaryHandle(DictionaryHandle, ItemHandle, DictHandle) \
@@ -401,9 +384,9 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_ItemFindByBuffer(DictionaryHandle, Buffer, BufferLength, StartItemHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                                     \
         ->ItemFindByBuffer(DictionaryHandle, Buffer, BufferLength, StartItemHandle, ItemHandle)
-#define IDictionary_ItemFindByIndex(DictionaryHandle, Index, BufferLength, StartItemHandle, ItemHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                                   \
-        ->ItemFindByIndex(DictionaryHandle, Index, BufferLength, StartItemHandle, ItemHandle)
+#define IDictionary_ItemFindByIndex(DictionaryHandle, Index, StartItemHandle, ItemHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)                                     \
+        ->ItemFindByIndex(DictionaryHandle, Index, StartItemHandle, ItemHandle)
 #define IDictionary_ItemGetNext(DictionaryHandle, ItemHandle, NextItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetNext(DictionaryHandle, ItemHandle, NextItemHandle)
 #define IDictionary_ItemGetPrev(DictionaryHandle, ItemHandle, PrevItemHandle) \
@@ -412,8 +395,8 @@ typedef struct IDictionaryVtbl {
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetFirst(DictionaryHandle, ItemHandle)
 #define IDictionary_ItemGetLast(DictionaryHandle, ItemHandle) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetLast(DictionaryHandle, ItemHandle)
-#define IDictionary_ItemGetCount(DictionaryHandle, ItemCount) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetCount(DictionaryHandle, ItemCount)
+#define IDictionary_ItemGetCount(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->ItemGetCount(DictionaryHandle)
 
 #define IDictionary_Log(DictionaryHandle, Format, ...) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Log(DictionaryHandle, Format, __VA_ARGS__)
@@ -443,25 +426,25 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_MergeItem(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags) \
     Class_VtblCast(TargetDictionaryHandle, IDictionaryVtbl)                                            \
         ->MergeItem(TargetDictionaryHandle, SourceDictionaryHandle, SourceItemHandle, Flags)
-#define IDictionary_SkipRoot(DictionaryHandle, DataDictionaryHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SkipRoot(DictionaryHandle, DataDictionaryHandle)
-#define IDictionary_SkipRootContainer(DictionaryHandle, DataDictionaryHandle) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SkipRootContainer(DictionaryHandle, DataDictionaryHandle)
+#define IDictionary_SkipRoot(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SkipRoot(DictionaryHandle)
+#define IDictionary_SkipRootContainer(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SkipRootContainer(DictionaryHandle)
 #define IDictionary_Reset(DictionaryHandle) Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Reset(DictionaryHandle)
 #define IDictionary_Dump(DictionaryHandle)  Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->Dump(DictionaryHandle)
 
 #define IDictionary_SetCaseSensitive(DictionaryHandle, CaseSensitive) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetCaseSensitive(DictionaryHandle, CaseSensitive)
-#define IDictionary_GetCaseSensitive(DictionaryHandle, CaseSensitive) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetCaseSensitive(DictionaryHandle, CaseSensitive)
+#define IDictionary_GetCaseSensitive(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetCaseSensitive(DictionaryHandle)
 #define IDictionary_SetPrivateKeys(DictionaryHandle, PrivateKeys) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetPrivateKeys(DictionaryHandle, PrivateKeys)
-#define IDictionary_GetPrivateKeys(DictionaryHandle, PrivateKeys) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetPrivateKeys(DictionaryHandle, PrivateKeys)
+#define IDictionary_GetPrivateKeys(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetPrivateKeys(DictionaryHandle)
 #define IDictionary_SetAllowDuplicates(DictionaryHandle, AllowDuplicates) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetAllowDuplicates(DictionaryHandle, AllowDuplicates)
-#define IDictionary_GetAllowDuplicates(DictionaryHandle, AllowDuplicates) \
-    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetAllowDuplicatese(DictionaryHandle, AllowDuplicates)
+#define IDictionary_GetAllowDuplicates(DictionaryHandle) \
+    Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetAllowDuplicates(DictionaryHandle)
 
 #define IDictionary_SetItemRemoveCallback(DictionaryHandle, UserPtr, Callback) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->SetItemRemoveCallback(DictionaryHandle, UserPtr, Callback)
@@ -476,7 +459,7 @@ typedef struct IDictionaryVtbl {
 #define IDictionary_GetItemValueChangeCallback(DictionaryHandle, UserPtr, Callback) \
     Class_VtblCast(DictionaryHandle, IDictionaryVtbl)->GetItemValueChangeCallback(DictionaryHandle, UserPtr, Callback)
 
-#define IDictionary_Create(DictionaryHandle)  Dictionary_Create(DictionaryHandle)
+#define IDictionary_Create()                  Dictionary_Create()
 #define IDictionary_AddRef(DictionaryHandle)  Dictionary_AddRef(DictionaryHandle)
 #define IDictionary_Release(DictionaryHandle) Dictionary_Release(DictionaryHandle)
 

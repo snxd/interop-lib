@@ -109,7 +109,7 @@ typedef char *(*Class_ConvertToInstanceIdCallback)(void *Pointer);
 typedef bool (*Class_TrackInstanceCallback)(void *Pointer, const char *InstanceId);
 typedef bool (*Class_UntrackInstanceCallback)(void *Pointer);
 
-typedef bool (*Dictionary_CreateCallback)(echandle *DictionaryHandle);
+typedef echandle (*Dictionary_CreateCallback)(void);
 typedef int32_t (*Dictionary_ReleaseCallback)(echandle *DictionaryHandle);
 
 typedef bool (*NotificationCenter_AddInstanceObserverCallback)(const char *Type, const char *Notification,
@@ -174,8 +174,8 @@ bool Class_UntrackInstance(void *Pointer) {
     return GlobalInteropLib.Class_UntrackInstance(Pointer);
 }
 
-bool Dictionary_Create(echandle *DictionaryHandle) {
-    return GlobalInteropLib.Dictionary_Create(DictionaryHandle);
+echandle Dictionary_Create(void) {
+    return GlobalInteropLib.Dictionary_Create();
 }
 
 int32_t Dictionary_Release(echandle *DictionaryHandle) {

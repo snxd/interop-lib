@@ -28,8 +28,8 @@ typedef uint64_t time64_t;
 typedef struct ClassStruct {
     char InstanceId[36];
     uint32_t Id;
-    int32_t RefCount;
-    bool (*Reserved)(echandle *ClassHandle);
+    volatile int32_t RefCount;
+    bool (*Delete)(echandle *ClassHandle);
 } ClassStruct;
 
 #define Class_Id(CLASS)               (((ClassStruct *)(CLASS))->Id)
@@ -64,7 +64,7 @@ char *Class_ConvertToInstanceId(void *Pointer);
 bool Class_TrackInstance(void *Pointer, const char *InstanceId);
 bool Class_UntrackInstance(void *Pointer);
 
-bool Dictionary_Create(echandle *DictionaryHandle);
+echandle Dictionary_Create(void);
 int32_t Dictionary_Release(echandle *DictionaryHandle);
 
 bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,

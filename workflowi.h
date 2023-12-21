@@ -17,7 +17,7 @@ typedef struct IWorkflowVtbl {
     bool (*FindTaskByName)(echandle WorkflowHandle, const char *Name, echandle *TaskHandle);
     bool (*GetParentTaskHandle)(echandle WorkflowHandle, echandle TaskHandle, echandle *ParentTaskHandle);
 
-    bool (*FindTaskHandler)(echandle WorkflowHandle, char *Type, ITask **Interface);
+    bool (*FindTaskHandler)(echandle WorkflowHandle, const char *Type, ITask **Interface);
     bool (*RegisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
     bool (*UnregisterTaskHandler)(echandle WorkflowHandle, ITask *Interface);
 
@@ -127,10 +127,10 @@ typedef struct IWorkflowVtbl {
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->SetExpandStringCallback(WorkflowHandle, UserPtr, Callback)
 #define IWorkflow_GetExpandStringCallback(WorkflowHandle, UserPtr, Callback) \
     Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetExpandStringCallback(WorkflowHandle, UserPtr, Callback)
-#define IWorkflow_GetMacroDictionaryHandle(WorkflowHandle, MacroDictionaryHandle) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetMacroDictionaryHandle(WorkflowHandle, MacroDictionaryHandle)
-#define IWorkflow_GetDictionaryHandle(WorkflowHandle, DictionaryHandle) \
-    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetDictionaryHandle(WorkflowHandle, DictionaryHandle)
+#define IWorkflow_GetMacroDictionaryHandle(WorkflowHandle) \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetMacroDictionaryHandle(WorkflowHandle)
+#define IWorkflow_GetDictionaryHandle(WorkflowHandle) \
+    Class_VtblCast(WorkflowHandle, IWorkflowVtbl)->GetDictionaryHandle(WorkflowHandle)
 
 #define IWorkflow_RegisterTask(WorkflowHandle, TASK) IWorkflow_RegisterTaskHandler(WorkflowHandle, &TASK##_INTERFACE)
 #define IWorkflow_UnregisterTask(WorkflowHandle, TASK) \
