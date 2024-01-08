@@ -4,8 +4,8 @@ include_directories(.)
 
 set(INTEROPLIB_SRCS
     dictionaryi.h
-    interoplib.h
     interoplib.c
+    interoplib.h
     interopstub.h
     taski.h
     workflowi.h)
