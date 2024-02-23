@@ -27,7 +27,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Generate project
       run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release ${{ matrix.cmake-args}}
