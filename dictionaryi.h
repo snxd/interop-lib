@@ -120,9 +120,7 @@ typedef struct IDictionaryVtbl {
     bool (*item_get_last)(echandle handle, echandle *item_handle);
     int32_t (*item_get_count)(echandle handle);
 
-    FORMAT(2, 3)
     bool (*log)(echandle handle, const char *format, ...);
-    FORMAT(3, 4)
     bool (*log_tabbed)(echandle handle, int32_t depth, const char *format, ...);
     bool (*set_log_callback)(echandle handle, echandle log_handle, Generic_LogCallback callback);
     bool (*get_log_callback)(echandle handle, echandle *log_handle, Generic_LogCallback *callback);
