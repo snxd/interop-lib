@@ -41,48 +41,50 @@ typedef struct ClassStruct {
 
 /*********************************************************************/
 
-bool String_ConvertToHex(const uint8_t *Binary, int32_t BinarySize, bool Lower, char *Hex, int32_t MaxHex);
+bool String_ConvertToHex(const uint8_t *binary, int32_t binary_size, bool lower, char *hex, int32_t max_hex);
 
 /*********************************************************************/
 
-bool Base64_Encode(const uint8_t *Source, int32_t SourceLength, char *Target, int32_t MaxTarget, int32_t *TargetLength);
-bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired);
+bool Base64_Encode(const uint8_t *source, int32_t source_length, char *target, int32_t max_target,
+                   int32_t *target_length);
+int32_t Base64_CalculateEncodeSize(int32_t source_length);
 
 /*********************************************************************/
 
-typedef bool (*Generic_LogCallback)(echandle LogHandle, const char *Format, ...);
+typedef bool (*Generic_LogCallback)(echandle log_handle, const char *format, ...);
 
 /*********************************************************************/
 
-typedef bool (*NotificationCenter_ObserverCallback)(void *UserPtr, const char *Type, const char *Notification,
-                                                    const char *Sender, echandle DictionaryHandle);
+typedef bool (*NotificationCenter_ObserverCallback)(void *user_ptr, const char *type, const char *notification,
+                                                    const char *sender, echandle dictionary_handle);
 
 /*********************************************************************/
 
-void *Class_ConvertFromInstanceId(const char *InstanceId);
-char *Class_ConvertToInstanceId(void *Pointer);
-bool Class_TrackInstance(void *Pointer, const char *InstanceId);
-bool Class_UntrackInstance(void *Pointer);
+void *Class_ConvertFromInstanceId(const char *instance_id);
+char *Class_ConvertToInstanceId(void *pointer);
+bool Class_TrackInstance(void *pointer, const char *instance_id);
+bool Class_UntrackInstance(void *pointer);
 
 echandle Dictionary_Create(void);
-int32_t Dictionary_Release(echandle *DictionaryHandle);
+int32_t Dictionary_Release(echandle *dictionary_handle);
 
-bool NotificationCenter_AddObserver(const char *Type, const char *Notification, void *UserPtr,
-                                    NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_AddInstanceObserver(const char *Type, const char *Notification, const char *Sender,
-                                            void *UserPtr, NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_RemoveObserver(const char *Type, const char *Notification, void *UserPtr,
-                                       NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_RemoveInstanceObserver(const char *Type, const char *Notification, const char *Sender,
-                                               void *UserPtr, NotificationCenter_ObserverCallback Callback);
-bool NotificationCenter_Fire(const char *Type, const char *Notification, const char *Sender, echandle DictionaryHandle);
-bool NotificationCenter_FireWithJSON(const char *Type, const char *Notification, const char *Sender, const char *Format,
+bool NotificationCenter_AddObserver(const char *type, const char *notification, void *user_ptr,
+                                    NotificationCenter_ObserverCallback callback);
+bool NotificationCenter_AddInstanceObserver(const char *type, const char *notification, const char *sender,
+                                            void *user_ptr, NotificationCenter_ObserverCallback callback);
+bool NotificationCenter_RemoveObserver(const char *type, const char *notification, void *user_ptr,
+                                       NotificationCenter_ObserverCallback callback);
+bool NotificationCenter_RemoveInstanceObserver(const char *type, const char *notification, const char *sender,
+                                               void *user_ptr, NotificationCenter_ObserverCallback callback);
+bool NotificationCenter_Fire(const char *type, const char *notification, const char *sender,
+                             echandle dictionary_handle);
+bool NotificationCenter_FireWithJSON(const char *type, const char *notification, const char *sender, const char *format,
                                      ...);
-bool NotificationCenter_FireAfterDelay(const char *Type, const char *Notification, const char *Sender, int32_t DelayMS,
-                                       echandle DictionaryHandle);
-bool NotificationCenter_FireAfterDelayWithJSON(const char *Type, const char *Notification, const char *Sender,
-                                               int32_t DelayMS, const char *Format, ...);
-bool Interop_GenerateInstanceId(char *String, int32_t MaxString);
+bool NotificationCenter_FireAfterDelay(const char *type, const char *notification, const char *sender, int32_t delay_ms,
+                                       echandle dictionary_handle);
+bool NotificationCenter_FireAfterDelayWithJSON(const char *type, const char *notification, const char *sender,
+                                               int32_t delay_ms, const char *format, ...);
+bool Interop_GenerateInstanceId(char *string, int32_t max_string);
 
 /*********************************************************************/
 

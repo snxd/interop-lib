@@ -92,14 +92,9 @@ bool Base64_Encode(const uint8_t *Source, int32_t SourceLength, char *Target, in
     return true;
 }
 
-bool Base64_CalculateEncodeSize(int32_t SourceLength, int32_t *BytesRequired) {
-    // Round up to the nearest multiple of 4.
-    *BytesRequired = (SourceLength + 2) / 3 * 4;
-
-    // Include NULL terminator
-    *BytesRequired += 1;
-
-    return true;
+int32_t Base64_CalculateEncodeSize(int32_t source_length) {
+    // Round up to the nearest multiple of 4 and include NULL terminator
+    return ((source_length + 2) / 3 * 4) + 1;
 }
 
 /*********************************************************************/
