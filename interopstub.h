@@ -22,7 +22,7 @@ typedef bool (*Interop_ProcessInstanceCallback)(void *user_ptr);
  * Called when an instance is created
  * \param type_name type of object to be created
  * \param instance_id id of the object to be created
- * \param instance_id_length maximum length of the InstanceId
+ * \param max_instance_id maximum length of the instance id buffer
  * \param execute_user_ptr user pointer stored with execute callback
  * \param execute execute callback
  * \param invoke_instance pointer to the instance invocation callback function
@@ -31,9 +31,8 @@ typedef bool (*Interop_ProcessInstanceCallback)(void *user_ptr);
  * \param user_ptr pointer associated with instance id
  * \return true on success, false otherwise
  */
-bool Interop_CreateInstance(const char *type_name, char *instance_id, int32_t instance_id_length,
-                            void *execute_user_ptr, Interop_ExecuteCallback execute,
-                            Interop_InvokeInstanceCallback *invoke_instance,
+bool Interop_CreateInstance(const char *type_name, char *instance_id, int32_t max_instance_id, void *execute_user_ptr,
+                            Interop_ExecuteCallback execute, Interop_InvokeInstanceCallback *invoke_instance,
                             Interop_ReleaseInstanceCallback *release_instance,
                             Interop_ProcessInstanceCallback *process_instance, void **user_ptr);
 
