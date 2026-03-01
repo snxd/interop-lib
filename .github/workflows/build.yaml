@@ -36,7 +36,7 @@ jobs:
       run: cmake --build build --config Release
 
     - name: Upload build errors
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       if: failure()
       with:
         name: CMake Errors - ${{ matrix.name }}
